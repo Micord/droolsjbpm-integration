@@ -45,19 +45,6 @@
     </repository>
   </repositories>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>central</id>
-      <name>central</name>
-      <url>https://repo.micord.ru/repository/maven-public</url>
-    </pluginRepository>
-    <pluginRepository>
-      <id>micord</id>
-      <name>micord</name>
-      <url>https://repo.micord.ru/repository/maven-micord</url>
-    </pluginRepository>
-  </pluginRepositories>
-
   <scm>
     <connection>scm:git:https://github.com:kiegroup/droolsjbpm-integration.git</connection>
     <developerConnection>scm:git:git@github.com:kiegroup/droolsjbpm-integration.git</developerConnection>
