@@ -13,6 +13,8 @@
 
   <groupId>org.drools</groupId>
   <artifactId>droolsjbpm-integration</artifactId>
+  <version>7.58.0.Final-Micord-1-SNAPSHOT</version>
+
   <packaging>pom</packaging>
 
   <name>Drools and jBPM integration multiproject</name>
@@ -22,6 +24,7 @@
 
   <properties>
     <spotbugs.failOnViolation>true</spotbugs.failOnViolation>
+    <org.kie.version>7.58.0.Final</org.kie.version>
   </properties>
 
   <repositories>
@@ -104,7 +107,7 @@
       <dependency>
         <groupId>org.kie</groupId>
         <artifactId>kie-pmml-bom</artifactId>
-        <version>${project.version}</version>
+        <version>${version.org.kie}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
