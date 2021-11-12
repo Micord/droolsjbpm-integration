@@ -29,16 +29,6 @@
         <version>${version.io.takari.maven.plugins.compiler}</version>
         <extensions>true</extensions>
         <configuration>
-          <altDeploymentRepository>
-              <id>central</id>
-              <name>central</name>
-              <url>https://repo.micord.ru/repository/maven-public</url>
-          </altDeploymentRepository>
-          <altDeploymentRepository>
-            <id>micord</id>
-            <name>micord</name>
-            <url>https://repo.micord.ru/repository/maven-micord</url>
-          </altDeploymentRepository>
           <proc>none</proc>
         </configuration>
       </plugin>
