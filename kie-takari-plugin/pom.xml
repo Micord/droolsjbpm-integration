@@ -15,19 +15,6 @@
 
   <name>KIE :: Takari Plugin</name>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>central</id>
-      <name>central</name>
-      <url>https://repo.micord.ru/repository/maven-public</url>
-    </pluginRepository>
-    <pluginRepository>
-      <id>micord</id>
-      <name>micord</name>
-      <url>https://repo.micord.ru/repository/maven-micord</url>
-    </pluginRepository>
-  </pluginRepositories>
-
   <build>
     <plugins>
       <plugin>
