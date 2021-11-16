@@ -25,8 +25,6 @@
   <properties>
     <spotbugs.failOnViolation>true</spotbugs.failOnViolation>
     <org.kie.version>7.58.0.Final</org.kie.version>
-    <snapshotUrl>https://repo.micord.ru/repository/libs-snapshots-local/</snapshotUrl>
-    <releaseUrl>https://repo.micord.ru/repository/libs-releases-local/</releaseUrl>
   </properties>
 
   <repositories>
