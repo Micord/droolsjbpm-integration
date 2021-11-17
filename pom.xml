@@ -13,6 +13,8 @@
 
   <groupId>org.drools</groupId>
   <artifactId>droolsjbpm-integration</artifactId>
+  <version>7.58.0.Final-Micord-1</version>
+
   <packaging>pom</packaging>
 
   <name>Drools and jBPM integration multiproject</name>
@@ -22,6 +24,7 @@
 
   <properties>
     <spotbugs.failOnViolation>true</spotbugs.failOnViolation>
+    <org.kie.version>7.58.0.Final</org.kie.version>
   </properties>
 
   <repositories>
@@ -41,6 +44,19 @@
       </snapshots>
     </repository>
   </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>central</id>
+      <name>central</name>
+      <url>https://repo.micord.ru/repository/maven-public</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>micord</id>
+      <name>micord</name>
+      <url>https://repo.micord.ru/repository/maven-micord</url>
+    </pluginRepository>
+  </pluginRepositories>
 
   <scm>
     <connection>scm:git:https://github.com:kiegroup/droolsjbpm-integration.git</connection>
@@ -63,8 +79,8 @@
     <module>kie-security</module>
     <module>kie-camel</module>
     <module>kie-tomcat-integration</module>
-    <module>kie-integration-test-coverage</module>
-    <module>kie-plugins-testing</module>
+<!--    <module>kie-integration-test-coverage</module>-->
+<!--    <module>kie-plugins-testing</module>-->
     <module>kie-spring-boot</module>
     <module>camel-container-tests</module>
     <module>optaplanner-workbench-models</module>
@@ -104,7 +120,7 @@
       <dependency>
         <groupId>org.kie</groupId>
         <artifactId>kie-pmml-bom</artifactId>
-        <version>${project.version}</version>
+        <version>${version.org.kie}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

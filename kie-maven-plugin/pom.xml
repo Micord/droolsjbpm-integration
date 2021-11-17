@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.drools</groupId>
     <artifactId>droolsjbpm-integration</artifactId>
-    <version>7.58.0.Final</version>
+    <version>7.58.0.Final-Micord-1</version>
   </parent>
 
   <groupId>org.kie</groupId>
@@ -41,18 +41,18 @@
           <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
           <logDirectory>${project.build.directory}/it</logDirectory>
           <filterProperties>
-            <org.kie.version>${project.version}</org.kie.version>
+            <org.kie.version>7.58.0.Final</org.kie.version>
           </filterProperties>
         </configuration>
-        <executions>
-          <execution>
-            <id>integration-test</id>
-            <goals>
-              <goal>install</goal>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>integration-test</id>-->
+<!--            <goals>-->
+<!--              <goal>install</goal>-->
+<!--              <goal>run</goal>-->
+<!--            </goals>-->
+<!--          </execution>-->
+<!--        </executions>-->
       </plugin>
     </plugins>
   </build>
@@ -62,7 +62,7 @@
       <dependency>
         <groupId>org.kie</groupId>
         <artifactId>kie-pmml-bom</artifactId>
-        <version>${project.version}</version>
+        <version>${version.org.kie}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

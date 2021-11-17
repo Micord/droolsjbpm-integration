@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.drools</groupId>
     <artifactId>droolsjbpm-integration</artifactId>
-    <version>7.58.0.Final</version>
+    <version>7.58.0.Final-Micord-1</version>
   </parent>
 
   <groupId>org.kie</groupId>
@@ -15,6 +15,18 @@
 
   <name>KIE :: Takari Plugin</name>
 
+  <distributionManagement>
+    <repository>
+      <id>micord</id>
+      <name>Micord Release repository</name>
+      <url>https://repo.micord.ru/repository/packages-releases-local/</url>
+    </repository>
+    <snapshotRepository>
+      <id>snapshots</id>
+      <name>Micord Snapshots repository</name>
+      <url>https://repo.micord.ru/repository/packages-snapshots-local/</url>
+    </snapshotRepository>
+  </distributionManagement>
   <build>
     <plugins>
       <plugin>
