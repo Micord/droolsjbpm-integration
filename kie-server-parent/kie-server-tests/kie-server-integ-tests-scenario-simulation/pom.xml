@@ -3,10 +3,10 @@
   <parent>
     <groupId>org.kie.server</groupId>
     <artifactId>kie-server-tests</artifactId>
-    <version>7.74.1.Final</version>
+    <version>7.74.1.Final-Micord-1</version>
   </parent>
   <artifactId>kie-server-integ-tests-scenario-simulation</artifactId>
-  
+
   <name>KIE :: Execution Server :: Tests :: Scenario Simulation Integration Tests</name>
   <description>KIE Execution Server Integration Tests (REST, JMS) with configuration options to run on different containers.</description>
 
@@ -39,7 +39,7 @@
       <artifactId>kie-server-client</artifactId>
       <scope>test</scope>
     </dependency>
-    
+
     <!-- Logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -74,7 +74,7 @@
       <type>war</type>
       <scope>test</scope>
     </dependency>
-    
+
     <!-- DO NOT REMOVE THIS COMMENT. Ref commit 3a92c62 of PR kiegroup/droolsjbpm-integration#447
      This is an artificial dependency to make sure the kie-server-tests modules are executed one at a time during
      parallel build (otherwise the tests fail because of conflicting port binding) -->

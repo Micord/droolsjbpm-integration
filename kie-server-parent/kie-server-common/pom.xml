@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.kie.server</groupId>
     <artifactId>kie-server-parent</artifactId>
-    <version>7.74.1.Final</version>
+    <version>7.74.1.Final-Micord-1</version>
   </parent>
 
   <artifactId>kie-server-common</artifactId>
@@ -51,7 +51,7 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
-    
+
     <!-- for testing KieServerHttpRequest -->
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
@@ -98,4 +98,3 @@
     </plugins>
   </build>
 </project>
-

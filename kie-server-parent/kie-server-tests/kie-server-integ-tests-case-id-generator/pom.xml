@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.kie.server</groupId>
     <artifactId>kie-server-tests</artifactId>
-    <version>7.74.1.Final</version>
+    <version>7.74.1.Final-Micord-1</version>
   </parent>
 
   <artifactId>kie-server-integ-tests-case-id-generator</artifactId>
@@ -32,7 +32,7 @@
       <groupId>org.jbpm</groupId>
       <artifactId>jbpm-case-mgmt-api</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>

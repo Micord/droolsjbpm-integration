@@ -3,12 +3,12 @@
   <parent>
     <groupId>org.kie</groupId>
     <artifactId>kie-spring-boot-autoconfiguration</artifactId>
-    <version>7.74.1.Final</version>
+    <version>7.74.1.Final-Micord-1</version>
   </parent>
   <artifactId>kie-server-spring-boot-autoconfiguration-drools</artifactId>
   <name>KIE :: Spring :: Boot :: KIE Server Auto Configuration :: Drools</name>
   <description>Drools KIE Server SpringBoot Auto Configuration</description>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -24,7 +24,7 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>org.kie</groupId>
       <artifactId>kie-api</artifactId>
@@ -75,12 +75,12 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>org.kie</groupId>
       <artifactId>kie-server-spring-boot-autoconfiguration</artifactId>
     </dependency>
-    
+
     <!-- drools kie server dependencies -->
     <dependency>
       <groupId>org.kie.server</groupId>
@@ -140,8 +140,8 @@
       <groupId>org.kie.server</groupId>
       <artifactId>kie-server-rest-drools</artifactId>
     </dependency>
-    
-    
+
+
     <!-- dmn kie server dependencies -->
     <dependency>
       <groupId>org.kie.server</groupId>

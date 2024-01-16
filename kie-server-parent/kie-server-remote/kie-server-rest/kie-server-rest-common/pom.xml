@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.kie.server</groupId>
     <artifactId>kie-server-rest</artifactId>
-    <version>7.74.1.Final</version>
+    <version>7.74.1.Final-Micord-1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -52,7 +52,7 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
-    
+
     <!-- REST -->
     <dependency>
       <groupId>org.kie.server</groupId>
@@ -75,7 +75,7 @@
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId> jackson-module-jaxb-annotations</artifactId>
     </dependency>
-    
+
     <!-- Swagger -->
     <dependency>
     	<groupId>io.swagger</groupId>

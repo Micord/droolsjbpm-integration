@@ -13,6 +13,8 @@
 
   <groupId>org.drools</groupId>
   <artifactId>droolsjbpm-integration</artifactId>
+  <version>7.74.1.Final-Micord-1</version>
+
   <packaging>pom</packaging>
 
   <name>Drools and jBPM integration multiproject</name>
@@ -22,25 +24,47 @@
 
   <properties>
     <spotbugs.failOnViolation>true</spotbugs.failOnViolation>
+    <org.kie.version>7.74.1.Final</org.kie.version>
+    <nexus.url>https://repo.micord.ru</nexus.url>
   </properties>
 
   <repositories>
     <!-- Bootstrap repository to locate the parent pom when the parent pom has not been build locally. -->
     <repository>
-      <id>jboss-public-repository-group</id>
-      <name>JBoss Public Repository Group</name>
-      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
-      <layout>default</layout>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </snapshots>
+      <id>micord-public</id>
+      <name>micord-public</name>
+      <url>${nexus.url}/repository/maven-public</url>
+    </repository>
+    <repository>
+      <id>micord</id>
+      <name>micord</name>
+      <url>${nexus.url}/repository/maven-micord</url>
     </repository>
   </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>micord-public</id>
+      <name>micord-public</name>
+      <url>${nexus.url}/repository/maven-public</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>micord</id>
+      <name>micord</name>
+      <url>${nexus.url}/repository/maven-micord</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <distributionManagement>
+    <repository>
+      <id>micord</id>
+      <name>micord releases</name>
+      <url>${nexus.url}/repository/libs-releases-local</url>
+    </repository>
+    <snapshotRepository>
+      <id>snapshots</id>
+      <name>micord snapshots</name>
+      <url>${nexus.url}/repository/libs-snapshots-local</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <scm>
     <connection>scm:git:https://github.com:kiegroup/droolsjbpm-integration.git</connection>
@@ -58,14 +82,14 @@
     <module>kie-aries-blueprint</module>
     <module>kie-server-parent</module>
     <module>jbpm-process-svg</module>
-    <module>kie-osgi</module>
+<!--    <module>kie-osgi</module>-->
     <module>kie-performance-kit</module>
     <module>kie-camel</module>
     <module>kie-tomcat-integration</module>
-    <module>kie-integration-test-coverage</module>
-    <module>kie-plugins-testing</module>
+<!--    <module>kie-integration-test-coverage</module>-->
+<!--    <module>kie-plugins-testing</module>-->
     <module>kie-spring-boot</module>
-    <module>camel-container-tests</module>
+<!--    <module>camel-container-tests</module>-->
     <module>optaplanner-workbench-models</module>
   </modules>
 
@@ -102,7 +126,7 @@
       <dependency>
         <groupId>org.kie</groupId>
         <artifactId>kie-pmml-bom</artifactId>
-        <version>${project.version}</version>
+        <version>${org.kie.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

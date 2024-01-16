@@ -5,7 +5,7 @@
   <parent>
     <artifactId>kie-server-rest</artifactId>
     <groupId>org.kie.server</groupId>
-    <version>7.74.1.Final</version>
+    <version>7.74.1.Final-Micord-1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -59,7 +59,7 @@
       <groupId>org.kie</groupId>
       <artifactId>jbpm-process-svg</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>io.swagger</groupId>
       <artifactId>swagger-annotations</artifactId>

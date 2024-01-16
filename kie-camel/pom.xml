@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.drools</groupId>
     <artifactId>droolsjbpm-integration</artifactId>
-    <version>7.74.1.Final</version>
+    <version>7.74.1.Final-Micord-1</version>
   </parent>
 
   <groupId>org.kie</groupId>
@@ -112,11 +112,11 @@
       <exclusions>
         <exclusion>
           <groupId>com.sun.xml.bind</groupId>
-          <artifactId>jaxb-impl</artifactId>        
+          <artifactId>jaxb-impl</artifactId>
         </exclusion>
         <exclusion>
           <groupId>com.sun.xml.bind</groupId>
-          <artifactId>jaxb-core</artifactId>        
+          <artifactId>jaxb-core</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

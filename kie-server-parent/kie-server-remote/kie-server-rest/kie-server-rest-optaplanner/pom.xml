@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.kie.server</groupId>
     <artifactId>kie-server-rest</artifactId>
-    <version>7.74.1.Final</version>
+    <version>7.74.1.Final-Micord-1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -27,7 +27,7 @@
       <groupId>org.kie</groupId>
       <artifactId>kie-internal</artifactId>
     </dependency>
-  
+
     <dependency>
       <groupId>org.kie.server</groupId>
       <artifactId>kie-server-api</artifactId>
@@ -39,11 +39,11 @@
     <dependency>
       <groupId>org.kie.server</groupId>
       <artifactId>kie-server-services-optaplanner</artifactId>
-    </dependency> 
+    </dependency>
     <dependency>
       <groupId>org.kie.server</groupId>
       <artifactId>kie-server-rest-common</artifactId>
-    </dependency> 
+    </dependency>
 
     <dependency>
       <groupId>org.kie.server</groupId>
@@ -62,7 +62,7 @@
       <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-persistence-jaxb</artifactId>
     </dependency>
-    
+
     <dependency>
     	<groupId>io.swagger</groupId>
     	<artifactId>swagger-annotations</artifactId>
@@ -72,13 +72,13 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
-    
+
     <!-- Test -->
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
-    </dependency> 
+    </dependency>
   </dependencies>
 
   <build>

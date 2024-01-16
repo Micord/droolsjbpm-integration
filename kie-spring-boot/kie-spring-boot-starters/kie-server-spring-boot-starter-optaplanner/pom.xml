@@ -3,14 +3,14 @@
   <parent>
     <groupId>org.kie</groupId>
     <artifactId>kie-spring-boot-starters</artifactId>
-    <version>7.74.1.Final</version>
+    <version>7.74.1.Final-Micord-1</version>
   </parent>
   <artifactId>kie-server-spring-boot-starter-optaplanner</artifactId>
-  
-  
+
+
   <name>KIE Server :: Spring :: Boot :: Starter :: OptaPlanner</name>
   <description>OptaPlanner - KIE Server SpringBoot Starter</description>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -44,5 +44,5 @@
       </plugin>
     </plugins>
   </build>
-  
+
 </project>

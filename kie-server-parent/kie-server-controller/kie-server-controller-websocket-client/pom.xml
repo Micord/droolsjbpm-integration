@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.kie.server</groupId>
     <artifactId>kie-server-controller</artifactId>
-    <version>7.74.1.Final</version>
+    <version>7.74.1.Final-Micord-1</version>
   </parent>
   <artifactId>kie-server-controller-websocket-client</artifactId>
   <name>KIE :: Execution Server :: Controller :: Websocket Client Implementation</name>
@@ -45,11 +45,11 @@
       <groupId>jakarta.websocket</groupId>
       <artifactId>jakarta.websocket-api</artifactId>
       <scope>provided</scope>
-    </dependency>  
-    
+    </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-    </dependency>  
+    </dependency>
   </dependencies>
 </project>

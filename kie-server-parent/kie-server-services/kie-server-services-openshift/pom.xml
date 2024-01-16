@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.kie.server</groupId>
     <artifactId>kie-server-services</artifactId>
-    <version>7.74.1.Final</version>
+    <version>7.74.1.Final-Micord-1</version>
   </parent>
 
   <artifactId>kie-server-services-openshift</artifactId>
@@ -30,7 +30,7 @@
         <scope>import</scope>
       </dependency>
 
-      <!-- Override fabric8 dependencies specified from parent pom with newer 
+      <!-- Override fabric8 dependencies specified from parent pom with newer
         version -->
       <dependency>
         <groupId>io.fabric8</groupId>
@@ -68,7 +68,7 @@
         <artifactId>openshift-server-mock</artifactId>
         <version>${version.kubernetes-client.server-mock}</version>
       </dependency>
-      <!-- Added back excluded dependency from parent pom due to required 
+      <!-- Added back excluded dependency from parent pom due to required
         by test run -->
       <dependency>
         <groupId>org.yaml</groupId>

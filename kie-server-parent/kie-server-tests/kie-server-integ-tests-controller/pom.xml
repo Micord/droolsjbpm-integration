@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.kie.server</groupId>
     <artifactId>kie-server-tests</artifactId>
-    <version>7.74.1.Final</version>
+    <version>7.74.1.Final-Micord-1</version>
   </parent>
 
   <artifactId>kie-server-integ-tests-controller</artifactId>
@@ -38,7 +38,7 @@
       <groupId>org.kie.server</groupId>
       <artifactId>kie-server-controller-websocket-client</artifactId>
       <scope>test</scope>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.kie.server</groupId>
       <artifactId>kie-server-controller-websocket-common</artifactId>

@@ -3,12 +3,12 @@
   <parent>
     <groupId>org.kie</groupId>
     <artifactId>kie-spring-boot-autoconfiguration</artifactId>
-    <version>7.74.1.Final</version>
+    <version>7.74.1.Final-Micord-1</version>
   </parent>
   <artifactId>kie-server-spring-boot-autoconfiguration-optaplanner</artifactId>
   <name>KIE :: Spring :: Boot :: KIE Server Auto Configuration :: OptaPlanner</name>
   <description>OptaPlanner KIE Server SpringBoot Auto Configuration</description>
-  
+
   <dependencies>
    <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -24,7 +24,7 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
     </dependency>
-    
+
      <dependency>
       <groupId>org.kie.server</groupId>
       <artifactId>kie-server-api</artifactId>
@@ -122,7 +122,7 @@
         </exclusion>
       </exclusions>
     </dependency>
-    
+
     <!-- optaplanner kie server dependencies -->
     <dependency>
       <groupId>org.kie.server</groupId>
