@@ -15,7 +15,7 @@
   <parent>
     <groupId>org.kie</groupId>
     <artifactId>kie-spring-boot-samples</artifactId>
-    <version>7.58.0.Final-Micord-1</version>
+    <version>7.74.1.Final</version>
   </parent>
 
   <artifactId>jbpm-spring-boot-sample-basic</artifactId>
@@ -54,10 +54,6 @@
         <exclusion>
           <groupId>jakarta.validation</groupId>
           <artifactId>jakarta.validation-api</artifactId>
-        </exclusion>
-        <exclusion>
-            <groupId>org.glassfish</groupId>
-            <artifactId>jakarta.el</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -102,13 +98,13 @@
 
     <!--Java 11 test dependencies-->
     <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-core</artifactId>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-xjc</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

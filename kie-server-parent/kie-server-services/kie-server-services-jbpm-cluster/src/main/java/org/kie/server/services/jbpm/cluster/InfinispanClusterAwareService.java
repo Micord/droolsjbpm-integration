@@ -51,10 +51,11 @@ public class InfinispanClusterAwareService implements ClusterAwareService {
     private static final Logger logger = LoggerFactory.getLogger(InfinispanClusterAwareService.class);
 
     private List<ClusterListener> listeners;
-    private EmbeddedCacheManager cacheManager;
 
     private String kieServerId;
     private String kieServerLocation;
+
+    private EmbeddedCacheManager cacheManager;
 
     public InfinispanClusterAwareService(String kieServerId, String kieServerLocation) {
         this.kieServerId = kieServerId;
@@ -72,6 +73,8 @@ public class InfinispanClusterAwareService implements ClusterAwareService {
         return new ClusterNode(kieServerId, kieServerLocation);
     }
 
+
+    
     public void init(EmbeddedCacheManager cacheManager) {
         this.cacheManager = cacheManager;
         cacheManager.addListener(this);
@@ -143,12 +146,14 @@ public class InfinispanClusterAwareService implements ClusterAwareService {
             return;
         }
         Cache<String, List<T>> cache = cacheManager.<String, List<T>> getCache(key);
-        List<T> values = cache.get(partition);
-        if(values == null) {
-            return;
+
+        synchronized (this) {
+            List<T> values = cache.get(partition);
+            values = (values == null) ? new ArrayList<>() : new ArrayList<>(values);
+            values.remove(value);
+            cache.put(partition, values);
         }
-        values.remove(value);
-        cache.put(partition, values);
+
     }
 
     @Override
@@ -156,13 +161,16 @@ public class InfinispanClusterAwareService implements ClusterAwareService {
         if (!cacheManager.cacheExists(key)) {
             return;
         }
+
         Cache<String, List<T>> cache = cacheManager.<String, List<T>> getCache(key);
-        List<T> values = cache.get(partition);
-        if(values == null) {
-            values = new ArrayList<>();
+
+        synchronized (this) {
+            List<T> values = cache.get(partition);
+            values = (values == null) ? new ArrayList<>() : new ArrayList<>(values);
+            values.add(value);
+            cache.put(partition, values);
         }
-        values.add(value);
-        cache.put(partition, values);
+
     }
 
     @Override
@@ -170,8 +178,10 @@ public class InfinispanClusterAwareService implements ClusterAwareService {
         if (!cacheManager.cacheExists(key)) {
             return emptyList();
         }
-        CacheCollection<List<T>> values = cacheManager.<String, List<T>> getCache(key).values();
-        return values.stream().flatMap(Collection::stream).collect(toList());
+        synchronized (this) {
+            CacheCollection<List<T>> values = cacheManager.<String, List<T>> getCache(key).values();
+            return values.stream().flatMap(Collection::stream).collect(toList());
+        }
     }
 
     @Override
@@ -179,8 +189,10 @@ public class InfinispanClusterAwareService implements ClusterAwareService {
         if (!cacheManager.cacheExists(key)) {
             return emptyList();
         }
-        List<T> values = cacheManager.<String, List<T>> getCache(key).get(partition);
-        return values == null ? emptyList() : values;
+        synchronized (this) {
+            List<T> values = cacheManager.<String, List<T>> getCache(key).get(partition);
+            return values == null ? emptyList() : values;
+        }
     }
 
     @Override

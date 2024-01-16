@@ -15,6 +15,30 @@
 
 package org.kie.server.services.jbpm;
 
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
+import static org.jbpm.services.api.AdvanceRuntimeDataService.TASK_ATTR_NAME;
+import static org.jbpm.services.api.AdvanceRuntimeDataService.TASK_ATTR_OWNER;
+import static org.jbpm.services.api.AdvanceRuntimeDataService.TASK_ATTR_STATUS;
+import static org.jbpm.services.api.query.model.QueryParam.all;
+import static org.kie.server.services.jbpm.ConvertUtils.buildQueryContext;
+import static org.kie.server.services.jbpm.ConvertUtils.buildQueryFilter;
+import static org.kie.server.services.jbpm.ConvertUtils.buildTaskByNameQueryFilter;
+import static org.kie.server.services.jbpm.ConvertUtils.buildTaskStatuses;
+import static org.kie.server.services.jbpm.ConvertUtils.convertToNodeInstance;
+import static org.kie.server.services.jbpm.ConvertUtils.convertToNodeInstanceList;
+import static org.kie.server.services.jbpm.ConvertUtils.convertToProcess;
+import static org.kie.server.services.jbpm.ConvertUtils.convertToProcessInstance;
+import static org.kie.server.services.jbpm.ConvertUtils.convertToProcessInstanceCustomVarsList;
+import static org.kie.server.services.jbpm.ConvertUtils.convertToProcessInstanceList;
+import static org.kie.server.services.jbpm.ConvertUtils.convertToProcessList;
+import static org.kie.server.services.jbpm.ConvertUtils.convertToServiceApiQueryParam;
+import static org.kie.server.services.jbpm.ConvertUtils.convertToTask;
+import static org.kie.server.services.jbpm.ConvertUtils.convertToTaskSummaryList;
+import static org.kie.server.services.jbpm.ConvertUtils.convertToUserTaskWithVariablesList;
+import static org.kie.server.services.jbpm.ConvertUtils.convertToVariablesList;
+import static org.kie.server.services.jbpm.ConvertUtils.nullEmpty;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -46,6 +70,7 @@ import org.kie.internal.query.QueryFilter;
 import org.kie.internal.task.api.AuditTask;
 import org.kie.internal.task.api.model.TaskEvent;
 import org.kie.server.api.KieServerConstants;
+import org.kie.server.api.model.definition.CountDefinition;
 import org.kie.server.api.model.definition.ProcessDefinitionList;
 import org.kie.server.api.model.definition.SearchQueryFilterSpec;
 import org.kie.server.api.model.instance.NodeInstance;
@@ -63,30 +88,6 @@ import org.kie.server.services.impl.locator.ContainerLocatorProvider;
 import org.kie.server.services.impl.marshal.MarshallerHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toList;
-import static org.jbpm.services.api.AdvanceRuntimeDataService.TASK_ATTR_NAME;
-import static org.jbpm.services.api.AdvanceRuntimeDataService.TASK_ATTR_OWNER;
-import static org.jbpm.services.api.AdvanceRuntimeDataService.TASK_ATTR_STATUS;
-import static org.jbpm.services.api.query.model.QueryParam.all;
-import static org.kie.server.services.jbpm.ConvertUtils.buildQueryContext;
-import static org.kie.server.services.jbpm.ConvertUtils.buildQueryFilter;
-import static org.kie.server.services.jbpm.ConvertUtils.buildTaskByNameQueryFilter;
-import static org.kie.server.services.jbpm.ConvertUtils.buildTaskStatuses;
-import static org.kie.server.services.jbpm.ConvertUtils.convertToNodeInstance;
-import static org.kie.server.services.jbpm.ConvertUtils.convertToNodeInstanceList;
-import static org.kie.server.services.jbpm.ConvertUtils.convertToProcess;
-import static org.kie.server.services.jbpm.ConvertUtils.convertToProcessInstance;
-import static org.kie.server.services.jbpm.ConvertUtils.convertToProcessInstanceCustomVarsList;
-import static org.kie.server.services.jbpm.ConvertUtils.convertToProcessInstanceList;
-import static org.kie.server.services.jbpm.ConvertUtils.convertToProcessList;
-import static org.kie.server.services.jbpm.ConvertUtils.convertToServiceApiQueryParam;
-import static org.kie.server.services.jbpm.ConvertUtils.convertToTask;
-import static org.kie.server.services.jbpm.ConvertUtils.convertToTaskSummaryList;
-import static org.kie.server.services.jbpm.ConvertUtils.convertToUserTaskWithVariablesList;
-import static org.kie.server.services.jbpm.ConvertUtils.convertToVariablesList;
-import static org.kie.server.services.jbpm.ConvertUtils.nullEmpty;
 
 public class RuntimeDataServiceBase {
 
@@ -189,7 +190,19 @@ public class RuntimeDataServiceBase {
         return processInstanceList;
     }
 
+    public CountDefinition countProcessInstancesByDeploymentId(String containerId, List<Integer> status) {
+        if (status == null || status.isEmpty()) {
+            status = new ArrayList<>();
+            status.add(ProcessInstance.STATE_ACTIVE);
+        }
+        logger.debug("About to search for process instance belonging to container '{}'", containerId);
 
+        Long instances = runtimeDataService.countProcessInstancesByDeploymentId(containerId, status);
+        logger.debug("Found {} process instance for container '{}', statuses '{}'", instances, containerId, status);
+
+        return new CountDefinition(instances);
+    }
+    
     public ProcessInstanceList getProcessInstancesByCorrelationKey(String correlationKey, Integer page, Integer pageSize, String sort, boolean sortOrder) {
         if (sort == null || sort.isEmpty()) {
             sort = "ProcessInstanceId";
@@ -339,7 +352,7 @@ public class RuntimeDataServiceBase {
     public ProcessDefinitionList getProcessesByDeploymentId(String containerId, Integer page, Integer pageSize, String sort, boolean sortOrder) {
         try {
             return getProcessesByDeploymentIdUncatch(containerId, page, pageSize, sort, sortOrder);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | DeploymentNotFoundException e) {
             // container was not found by locator
             return new ProcessDefinitionList();
         }
@@ -603,6 +616,7 @@ public class RuntimeDataServiceBase {
                         .message(taskSummary.getMessage())
                         .correlationKey(taskSummary.getCorrelationKey())
                         .processType(taskSummary.getProcessType())
+                        .assignedOwner(taskSummary.getCurrentOwner())
                         .build();
                 instances[counter] = task;
                 counter++;

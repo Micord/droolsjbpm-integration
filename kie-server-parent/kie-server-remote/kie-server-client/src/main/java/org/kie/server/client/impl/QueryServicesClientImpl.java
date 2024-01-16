@@ -31,6 +31,7 @@ import org.kie.server.api.model.ServiceResponse;
 import org.kie.server.api.model.Wrapped;
 import org.kie.server.api.model.admin.ExecutionErrorInstance;
 import org.kie.server.api.model.admin.ExecutionErrorInstanceList;
+import org.kie.server.api.model.definition.CountDefinition;
 import org.kie.server.api.model.definition.ProcessDefinition;
 import org.kie.server.api.model.definition.ProcessDefinitionList;
 import org.kie.server.api.model.definition.ProcessInstanceQueryFilterSpec;
@@ -70,6 +71,7 @@ import static org.kie.server.api.rest.RestURI.PROCESS_DEFINITIONS_BY_CONTAINER_I
 import static org.kie.server.api.rest.RestURI.PROCESS_DEFINITIONS_BY_ID_GET_URI;
 import static org.kie.server.api.rest.RestURI.PROCESS_DEFINITIONS_GET_URI;
 import static org.kie.server.api.rest.RestURI.PROCESS_ID;
+import static org.kie.server.api.rest.RestURI.PROCESS_INSTANCES_BY_CONTAINER_ID_COUNT_URI;
 import static org.kie.server.api.rest.RestURI.PROCESS_INSTANCES_BY_CONTAINER_ID_GET_URI;
 import static org.kie.server.api.rest.RestURI.PROCESS_INSTANCES_BY_CORRELATION_KEY_GET_URI;
 import static org.kie.server.api.rest.RestURI.PROCESS_INSTANCES_BY_PROCESS_ID_GET_URI;
@@ -479,6 +481,32 @@ public class QueryServicesClientImpl extends AbstractKieServicesClientImpl imple
         return Collections.emptyList();
     }
 
+    public Long countProcessInstancesByContainerId(String containerId, List<Integer> status) {
+        CountDefinition result;
+        if (config.isRest()) {
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put(CONTAINER_ID, containerId);
+
+            String queryString = getAdditionalParams("", "status", status);
+            result = makeHttpGetRequestAndCreateCustomResponseWithHandleNotFound(build(loadBalancer.getUrl(), QUERY_URI + "/" + PROCESS_INSTANCES_BY_CONTAINER_ID_COUNT_URI, valuesMap) + queryString, CountDefinition.class);
+        } else {
+            CommandScript script = new CommandScript(Collections.singletonList(new DescriptorCommand("QueryService", "countProcessInstancesByDeploymentId", new Object[]{containerId, safeList(status)})));
+            ServiceResponse<CountDefinition> response = (ServiceResponse<CountDefinition>) executeJmsCommand(script, DescriptorCommand.class.getName(), "BPM").getResponses().get(0);
+
+            throwExceptionOnFailure(response);
+            if (shouldReturnWithNullResponse(response)) {
+                return null;
+            }
+            result = response.getResult();
+        }
+
+        if (result != null) {
+            return result.getCount();
+        }
+
+        return null;
+    }
+
     @Override
     public List<ProcessInstance> findProcessInstancesByStatus(List<Integer> status, Integer page, Integer pageSize, String sort, boolean sortOrder) {
         ProcessInstanceList result = null;
@@ -573,7 +601,7 @@ public class QueryServicesClientImpl extends AbstractKieServicesClientImpl imple
             Map<String, Object> valuesMap = new HashMap<String, Object>();
             valuesMap.put(VAR_NAME, variableName);
 
-            String statusQueryString = getAdditionalParams("?varValue=" + variableValue + "&sort=" + sort + "&sortOrder=" + sortOrder, "status", status);
+            String statusQueryString = getAdditionalParams("?varValue=" + RestURI.encode(variableValue) + "&sort=" + sort + "&sortOrder=" + sortOrder, "status", status);
             String queryString = getPagingQueryString(statusQueryString, page, pageSize);
 
             result = makeHttpGetRequestAndCreateCustomResponse(build(loadBalancer.getUrl(), QUERY_URI + "/" + PROCESS_INSTANCE_BY_VAR_NAME_GET_URI, valuesMap) + queryString, ProcessInstanceList.class);
@@ -959,7 +987,7 @@ public class QueryServicesClientImpl extends AbstractKieServicesClientImpl imple
             Map<String, Object> valuesMap = new HashMap<String, Object>();
             valuesMap.put(QUERY_NAME, queryName);
 
-            String queryString = getPagingQueryString("?mapper=" + mapper + "&orderBy=" + orderBy, page, pageSize);
+            String queryString = getPagingQueryString("?mapper=" + mapper + "&orderBy=" + RestURI.encode(orderBy), page, pageSize);
             result = makeHttpGetRequestAndCreateCustomResponse(build(loadBalancer.getUrl(), QUERY_DEF_URI + "/" + RUN_QUERY_DEF_GET_URI, valuesMap) + queryString, resultTypeList);
 
         } else {

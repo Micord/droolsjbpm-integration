@@ -415,7 +415,7 @@ public class QueryDataServiceIntegrationTest extends JbpmKieServerBaseIntegratio
             assertEquals(query.getExpression(), replaced.getExpression());
             assertEquals(query.getTarget(), replaced.getTarget());
             assertNotNull(replaced.getColumns());
-            assertEquals(replaced.getColumns().size(), 19);
+            assertEquals(replaced.getColumns().size(), 18);
 
             tasks = queryClient.query(query.getName(), QueryServicesClient.QUERY_MAP_TASK, 0, 10, TaskInstance.class);
             assertNotNull(tasks);
@@ -774,7 +774,8 @@ public class QueryDataServiceIntegrationTest extends JbpmKieServerBaseIntegratio
                 // expected
             }
 
-            errors = queryClient.query(query.getName(), QueryServicesClient.QUERY_MAP_ERROR, 0, 10, ExecutionErrorInstance.class);
+            // Database can contain errors from tests executed before, returning up to 100 errors to make sure all are returned.
+            errors = queryClient.query(query.getName(), QueryServicesClient.QUERY_MAP_ERROR, 0, 100, ExecutionErrorInstance.class);
             errors = filterErrorsByProcessInstanceId(errors, processInstanceId);
             assertNotNull(errors);
             assertEquals(1, errors.size());

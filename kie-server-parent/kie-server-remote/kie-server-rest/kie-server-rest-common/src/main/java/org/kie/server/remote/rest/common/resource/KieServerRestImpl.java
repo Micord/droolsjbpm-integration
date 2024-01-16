@@ -108,7 +108,7 @@ public class KieServerRestImpl {
 
     @ApiOperation(value="Returns a list of KIE containers on the KIE Server.")
     @ApiResponses(value = { @ApiResponse(code = 500, message = "Unexpected error"), 
-            @ApiResponse(code = 200, response=ServiceResponse.class, message = "Successfull response", examples=@Example(value= {
+            @ApiResponse(code = 200, response=ServiceResponse.class, message = "Successful response", examples=@Example(value= {
                     @ExampleProperty(mediaType=JSON, value=GET_CONTAINERS_RESPONSE_JSON)})) })
     @GET
     @Path("containers")
@@ -132,7 +132,7 @@ public class KieServerRestImpl {
     @ApiOperation(value="Creates a new KIE container in the KIE Server with a specified KIE container ID",
             response=ServiceResponse.class, code=201)
     @ApiResponses(value = { @ApiResponse(code = 500, message = "Unexpected error"), @ApiResponse(code = 400, message = "container could not be created"), 
-            @ApiResponse(code = 201, message = "Successfull response", examples=@Example(value= {
+            @ApiResponse(code = 201, message = "Successful response", examples=@Example(value= {
                     @ExampleProperty(mediaType=JSON, value=CREATE_CONTAINER_RESPONSE_JSON)})) })
     @PUT
     @Path("containers/{" + CONTAINER_ID + "}")
@@ -164,7 +164,7 @@ public class KieServerRestImpl {
     @ApiOperation(value="Activates (previously deactivated) KIE container on this server",
             response=ServiceResponse.class, code=201)
     @ApiResponses(value = { @ApiResponse(code = 500, message = "Unexpected error"), @ApiResponse(code = 400, message = "container could not be activated"), 
-            @ApiResponse(code = 201, message = "Successfull response", examples=@Example(value= {
+            @ApiResponse(code = 201, message = "Successful response", examples=@Example(value= {
                     @ExampleProperty(mediaType=JSON, value=ACTIVATE_CONTAINER_RESPONSE_JSON)})) })
     @PUT
     @Path("containers/{" + CONTAINER_ID + "}/status/activated")
@@ -190,7 +190,7 @@ public class KieServerRestImpl {
     @ApiOperation(value="Deactivates (previously started) KIE container on this server",
             response=ServiceResponse.class, code=201)
     @ApiResponses(value = { @ApiResponse(code = 500, message = "Unexpected error"), @ApiResponse(code = 400, message = "container could not be deactivated"), 
-            @ApiResponse(code = 201, message = "Successfull response", examples=@Example(value= {
+            @ApiResponse(code = 201, message = "Successful response", examples=@Example(value= {
                     @ExampleProperty(mediaType=JSON, value=DEACTIVATE_CONTAINER_RESPONSE_JSON)})) })
     @PUT
     @Path("containers/{" + CONTAINER_ID + "}/status/deactivated")
@@ -229,20 +229,21 @@ public class KieServerRestImpl {
     @ApiOperation(value="Disposes a specified KIE container.",
             response=ServiceResponse.class, code=200)
     @ApiResponses(value = { @ApiResponse(code = 500, message = "Unexpected error"), 
-            @ApiResponse(code = 200, message = "Successfull response", examples=@Example(value= {
+            @ApiResponse(code = 200, message = "Successful response", examples=@Example(value= {
                     @ExampleProperty(mediaType=JSON, value=DISPOSE_CONTAINER_RESPONSE_JSON)})) })
     @DELETE
     @Path("containers/{" + CONTAINER_ID + "}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response disposeContainer( @Context HttpHeaders headers, 
-            @ApiParam(value = "Container id to be disposed (undeployed)", required = true, example = "evaluation_1.0.0-SNAPSHOT") @PathParam(CONTAINER_ID) String id ) {
+            @ApiParam(value = "Container id to be disposed (undeployed)", required = true, example = "evaluation_1.0.0-SNAPSHOT") @PathParam(CONTAINER_ID) String id,
+            @ApiParam(value = "optional abortProcessInstances flag to abort process instances when container is disposed", required = false) @QueryParam("abortProcessInstances") Boolean abortProcessInstances) {
         ServiceResponse<?> forbidden = this.server.checkAccessability();
         if (forbidden != null) {                       
             return createCorrectVariant( forbidden, headers, Status.BAD_REQUEST );
         }
         
         Header conversationIdHeader = buildConversationIdHeader(id, server.getServerRegistry(), headers);
-        return createCorrectVariant(server.disposeContainer(id), headers, conversationIdHeader);
+        return createCorrectVariant(server.disposeContainer(id, abortProcessInstances), headers, conversationIdHeader);
     }
 
     @ApiOperation(value="Returns information about the KIE scanner used for automatic updates in a specified KIE container, if applicable.")
@@ -299,7 +300,7 @@ public class KieServerRestImpl {
 
     @ApiOperation(value="Updates release ID information (group ID, artifact ID, version) for a specified KIE container.")
     @ApiResponses(value = { @ApiResponse(code = 500, message = "Unexpected error"), 
-            @ApiResponse(code = 200, response=ServiceResponse.class, message = "Successfull response", examples=@Example(value= {
+            @ApiResponse(code = 200, response=ServiceResponse.class, message = "Successful response", examples=@Example(value= {
                     @ExampleProperty(mediaType=JSON, value=UPDATE_RELEASE_RESPONSE_JSON)})) })
     @POST
     @Path("containers/{" + CONTAINER_ID + "}/release-id")

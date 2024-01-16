@@ -101,7 +101,6 @@ import org.kie.internal.runtime.conf.MergeMode;
 import org.kie.internal.runtime.conf.NamedObjectModel;
 import org.kie.internal.runtime.conf.ObjectModel;
 import org.kie.internal.runtime.conf.RuntimeStrategy;
-import org.kie.internal.runtime.manager.deploy.DeploymentDescriptorImpl;
 import org.kie.internal.runtime.manager.deploy.DeploymentDescriptorManager;
 import org.kie.internal.task.api.UserInfo;
 import org.kie.scanner.KieModuleMetaData;
@@ -122,11 +121,13 @@ import org.kie.server.services.api.KieServerExtension;
 import org.kie.server.services.api.KieServerRegistry;
 import org.kie.server.services.api.SupportedTransports;
 import org.kie.server.services.impl.KieServerImpl;
+import org.kie.server.services.impl.security.ElytronIdentityProvider;
 import org.kie.server.services.jbpm.admin.ProcessAdminServiceBase;
 import org.kie.server.services.jbpm.admin.UserTaskAdminServiceBase;
 import org.kie.server.services.jbpm.jpa.PersistenceUnitExtensionsLoader;
 import org.kie.server.services.jbpm.jpa.PersistenceUnitInfoImpl;
 import org.kie.server.services.jbpm.jpa.PersistenceUnitInfoLoader;
+import org.kie.server.services.jbpm.security.ElytronUserGroupCallbackImpl;
 import org.kie.server.services.jbpm.security.JMSUserGroupAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -135,7 +136,6 @@ public class JbpmKieServerExtension implements KieServerExtension {
 
     public static final String EXTENSION_NAME = "jBPM";
     private static final String PERSISTENCE_XML_LOCATION = "/jpa/META-INF/persistence.xml";
-    private static final String IS_DISPOSE_CONTAINER_PARAM = "jBPMExtensionIsDisposeContainer";
 
     private static final Logger logger = LoggerFactory.getLogger(JbpmKieServerExtension.class);
 
@@ -221,10 +221,17 @@ public class JbpmKieServerExtension implements KieServerExtension {
         // loaded from system property as callback info isn't stored as configuration in kie server repository
         String callbackConfig = System.getProperty(KieServerConstants.CFG_HT_CALLBACK);
 
-        // if no other callback set, use jaas by default
+        // if no other callback set, use Elytron or jaas by default
         if (callbackConfig == null || callbackConfig.isEmpty()) {
-            System.setProperty(KieServerConstants.CFG_HT_CALLBACK, "jaas");
-            JAASUserGroupCallbackImpl.addExternalUserGroupAdapter(new JMSUserGroupAdapter());
+            if (ElytronIdentityProvider.available()) {
+                System.setProperty(KieServerConstants.CFG_HT_CALLBACK, "custom");
+                String name = ElytronUserGroupCallbackImpl.class.getName();
+                ElytronUserGroupCallbackImpl.addExternalUserGroupAdapter(new JMSUserGroupAdapter());
+                System.setProperty(KieServerConstants.CFG_HT_CALLBACK_CLASS, name);
+            } else {
+                System.setProperty(KieServerConstants.CFG_HT_CALLBACK, "jaas");
+                JAASUserGroupCallbackImpl.addExternalUserGroupAdapter(new JMSUserGroupAdapter());
+            }
         }
 
         this.isExecutorAvailable = isExecutorOnClasspath();
@@ -530,7 +537,7 @@ public class JbpmKieServerExtension implements KieServerExtension {
     public void updateContainer(String id, KieContainerInstance kieContainerInstance, Map<String, Object> parameters) {
         // essentially it's a redeploy to make sure all components are up to date,
         // though update of kie base is done only once on kie server level and KieContainer is reused across all extensions
-        parameters.put(IS_DISPOSE_CONTAINER_PARAM, Boolean.FALSE);
+        parameters.put(KieServerConstants.IS_DISPOSE_CONTAINER_PARAM, Boolean.FALSE);
 
         disposeContainer(id, kieContainerInstance, parameters);
 
@@ -556,17 +563,18 @@ public class JbpmKieServerExtension implements KieServerExtension {
 
         KModuleDeploymentUnit unit = (KModuleDeploymentUnit) deploymentService.getDeployedUnit(id).getDeploymentUnit();
 
-        if (kieServer.getInfo().getResult().getMode().equals(KieServerMode.PRODUCTION)) {
-            deploymentService.undeploy(new CustomIdKmoduleDeploymentUnit(id, unit.getGroupId(), unit.getArtifactId(), unit.getVersion()));
+        // Checking if we are disposing or updating the container. We must only keep process instances only when updating.
+        Boolean isDispose = (Boolean) parameters.get(KieServerConstants.IS_DISPOSE_CONTAINER_PARAM);
+        if (isDispose == null) {
+            isDispose = isDevelopmentMode() ? Boolean.TRUE : Boolean.FALSE;
+        }
+        
+        if (isDispose) {
+            deploymentService.undeploy(new CustomIdKmoduleDeploymentUnit(id, unit.getGroupId(), unit.getArtifactId(), unit.getVersion()), PreUndeployOperations.abortUnitActiveProcessInstances(runtimeDataService, deploymentService));
+        } else if (isDevelopmentMode()){
+            deploymentService.undeploy(new CustomIdKmoduleDeploymentUnit(id, unit.getGroupId(), unit.getArtifactId(), unit.getVersion()), PreUndeployOperations.doNothing());
         } else {
-            // Checking if we are disposing or updating the container. We must only keep process instances only when updating.
-            Boolean isDispose = (Boolean) parameters.getOrDefault(IS_DISPOSE_CONTAINER_PARAM, Boolean.TRUE);
-
-            if (isDispose) {
-                deploymentService.undeploy(new CustomIdKmoduleDeploymentUnit(id, unit.getGroupId(), unit.getArtifactId(), unit.getVersion()), PreUndeployOperations.abortUnitActiveProcessInstances(runtimeDataService, deploymentService));
-            } else {
-                deploymentService.undeploy(new CustomIdKmoduleDeploymentUnit(id, unit.getGroupId(), unit.getArtifactId(), unit.getVersion()), PreUndeployOperations.doNothing());
-            }
+            deploymentService.undeploy(new CustomIdKmoduleDeploymentUnit(id, unit.getGroupId(), unit.getArtifactId(), unit.getVersion()));
         }
 
         // remove any query result mappers for container

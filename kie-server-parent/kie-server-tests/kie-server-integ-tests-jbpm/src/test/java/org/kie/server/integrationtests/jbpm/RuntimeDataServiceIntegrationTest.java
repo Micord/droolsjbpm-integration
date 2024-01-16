@@ -15,6 +15,23 @@
 
 package org.kie.server.integrationtests.jbpm;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.jbpm.services.api.AdvanceRuntimeDataService.PROCESS_ATTR_DEFINITION_ID;
+import static org.jbpm.services.api.AdvanceRuntimeDataService.PROCESS_ATTR_DEPLOYMENT_ID;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeFalse;
+import static org.kie.server.api.util.QueryParamFactory.equalsTo;
+import static org.kie.server.api.util.QueryParamFactory.history;
+import static org.kie.server.api.util.QueryParamFactory.list;
+import static org.kie.server.api.util.QueryParamFactory.onlyActiveTasks;
+import static org.kie.server.api.util.QueryParamFactory.onlyCompletedTasks;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,23 +71,6 @@ import org.kie.server.integrationtests.category.Smoke;
 import org.kie.server.integrationtests.config.TestConfig;
 import org.kie.server.integrationtests.shared.KieServerAssert;
 import org.kie.server.integrationtests.shared.KieServerDeployer;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.jbpm.services.api.AdvanceRuntimeDataService.PROCESS_ATTR_DEFINITION_ID;
-import static org.jbpm.services.api.AdvanceRuntimeDataService.PROCESS_ATTR_DEPLOYMENT_ID;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeFalse;
-import static org.kie.server.api.util.QueryParamFactory.equalsTo;
-import static org.kie.server.api.util.QueryParamFactory.history;
-import static org.kie.server.api.util.QueryParamFactory.list;
-import static org.kie.server.api.util.QueryParamFactory.onlyActiveTasks;
-import static org.kie.server.api.util.QueryParamFactory.onlyCompletedTasks;
 
 
 
@@ -411,7 +411,7 @@ public class RuntimeDataServiceIntegrationTest extends JbpmKieServerBaseIntegrat
                 assertTrue(processInstanceIds.contains(instance.getId()));
                 assertEquals(PROCESS_ID_USERTASK, instance.getProcessId());
             }
-
+            
             instances = queryClient.findProcessInstancesByContainerId(CONTAINER_ID, null, 0, 10, SORT_BY_PROCESS_ID, false);
             assertNotNull(instances);
             assertEquals(5, instances.size());
@@ -422,6 +422,7 @@ public class RuntimeDataServiceIntegrationTest extends JbpmKieServerBaseIntegrat
                     assertEquals(PROCESS_ID_SIGNAL_PROCESS, instances.get(i).getProcessId());
                 }
             }
+            assertEquals(Long.valueOf(5), queryClient.countProcessInstancesByContainerId(CONTAINER_ID, null));
         } finally {
             abortProcessInstances(processInstanceIds);
         }
@@ -1462,12 +1463,12 @@ public class RuntimeDataServiceIntegrationTest extends JbpmKieServerBaseIntegrat
                     .type(TaskEvent.TaskEventType.ADDED.toString())
                     .processInstanceId(processInstanceId)
                     .taskId(taskInstance.getId())
-                    .user(PROCESS_ID_USERTASK)      // is this really correct to set process id as user for added task
+                    .assignedOwner(USER_YODA)
+                    .user(TestConfig.getUsername())
                     .build();
 
             TaskEventInstance event = events.get(0);
             assertTaskEventInstance(expectedTaskEventInstance, event);
-            //assertEquals(PROCESS_ID_USERTASK, event.getUserId());   // is this really correct to set process id as user for added task
 
             // now let's start it
             taskClient.startTask(CONTAINER_ID, taskInstance.getId(), USER_YODA);
@@ -1492,7 +1493,7 @@ public class RuntimeDataServiceIntegrationTest extends JbpmKieServerBaseIntegrat
 
             event = getTaskEventInstanceFromListByType(events, TaskEvent.TaskEventType.ADDED.toString());
             expectedTaskEventInstance.setType(TaskEvent.TaskEventType.ADDED.toString());
-            expectedTaskEventInstance.setUserId(PROCESS_ID_USERTASK);  // is this really correct to set process id as user for added task
+            expectedTaskEventInstance.setUserId(USER_YODA);
             assertTaskEventInstance(expectedTaskEventInstance, event);
 
             event = getTaskEventInstanceFromListByType(events, TaskEvent.TaskEventType.STARTED.toString());
@@ -1959,6 +1960,7 @@ public class RuntimeDataServiceIntegrationTest extends JbpmKieServerBaseIntegrat
         assertEquals(expected.getProcessInstanceId(), actual.getProcessInstanceId());
         assertEquals(expected.getTaskId(), actual.getTaskId());
         assertEquals(expected.getUserId(), actual.getUserId());
+        assertEquals(expected.getAssignedOwner(), actual.getAssignedOwner());
         assertNotNull(actual.getId());
         assertNotNull(actual.getLogTime());
         assertNotNull(actual.getWorkItemId());

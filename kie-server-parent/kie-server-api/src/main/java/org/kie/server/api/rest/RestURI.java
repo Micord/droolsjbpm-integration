@@ -16,6 +16,7 @@
 
 package org.kie.server.api.rest;
 
+import java.net.URLEncoder;
 import java.util.Map;
 
 import org.apache.commons.lang3.text.StrLookup;
@@ -65,6 +66,8 @@ public class RestURI {
     public static final String SVG_NODE_COMPLETED_COLOR = "svgCompletedColor";
     public static final String SVG_NODE_COMPLETED_BORDER_COLOR = "svgCompletedBorderColor";
     public static final String SVG_NODE_ACTIVE_COLOR = "svgActiveBorderColor";
+    public static final String SVG_NODE_ACTIVE_ASYNC_BORDER_COLOR = "svgActiveAsyncBorderColor";
+    public static final String SVG_INSTANCE_BADGES_SHOW = "svgInstanceBadgesShow";
 
     public static final String PROCESS_URI = "containers/{" + CONTAINER_ID + "}/processes";
     public static final String PROCESS_DEF_URI = "containers/{" + CONTAINER_ID + "}/processes/definitions";
@@ -127,6 +130,7 @@ public class RestURI {
     public static final String PROCESS_INSTANCES_GET_URI = "processes/instances";
     public static final String PROCESS_INSTANCES_BY_PROCESS_ID_GET_URI = "processes/{" + PROCESS_ID + "}/instances";
     public static final String PROCESS_INSTANCES_BY_CONTAINER_ID_GET_URI = "containers/{" + CONTAINER_ID + "}/process/instances";
+    public static final String PROCESS_INSTANCES_BY_CONTAINER_ID_COUNT_URI = "containers/{" + CONTAINER_ID + "}/process/instances/count";
     public static final String PROCESS_INSTANCE_BY_CORRELATION_KEY_GET_URI = "processes/instance/correlation/{" + CORRELATION_KEY + "}";
     public static final String PROCESS_INSTANCES_BY_CORRELATION_KEY_GET_URI = "processes/instances/correlation/{" + CORRELATION_KEY + "}";
     public static final String PROCESS_INSTANCE_BY_INSTANCE_ID_GET_URI = "processes/instances/{" + PROCESS_INST_ID + "}";
@@ -377,7 +381,11 @@ public class RestURI {
             if (obj == null) {
                 throw new IllegalArgumentException("Missing value for " + key);
             }
-            return obj.toString();
+            return encode(obj);
         }
+    }
+    
+    public static String encode (Object obj) {
+        return URLEncoder.encode(obj.toString()).replace("+","%20");
     }
 }

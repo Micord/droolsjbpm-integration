@@ -6,15 +6,13 @@
   <parent>
     <groupId>org.kie</groupId>
     <artifactId>kie-parent</artifactId>
-    <version>7.58.0.Final</version>
+    <version>7.74.1.Final</version>
     <!-- relativePath causes out-of-date problems on hudson secondary nodes -->
     <!--<relativePath>../droolsjbpm-build-bootstrap/pom.xml</relativePath>-->
   </parent>
 
   <groupId>org.drools</groupId>
   <artifactId>droolsjbpm-integration</artifactId>
-  <version>7.58.0.Final-Micord-1</version>
-
   <packaging>pom</packaging>
 
   <name>Drools and jBPM integration multiproject</name>
@@ -24,7 +22,6 @@
 
   <properties>
     <spotbugs.failOnViolation>true</spotbugs.failOnViolation>
-    <org.kie.version>7.58.0.Final</org.kie.version>
   </properties>
 
   <repositories>
@@ -45,19 +42,6 @@
     </repository>
   </repositories>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>central</id>
-      <name>central</name>
-      <url>https://repo.micord.ru/repository/maven-public</url>
-    </pluginRepository>
-    <pluginRepository>
-      <id>micord</id>
-      <name>micord</name>
-      <url>https://repo.micord.ru/repository/maven-micord</url>
-    </pluginRepository>
-  </pluginRepositories>
-
   <scm>
     <connection>scm:git:https://github.com:kiegroup/droolsjbpm-integration.git</connection>
     <developerConnection>scm:git:git@github.com:kiegroup/droolsjbpm-integration.git</developerConnection>
@@ -76,15 +60,13 @@
     <module>jbpm-process-svg</module>
     <module>kie-osgi</module>
     <module>kie-performance-kit</module>
-    <module>kie-security</module>
     <module>kie-camel</module>
     <module>kie-tomcat-integration</module>
-<!--    <module>kie-integration-test-coverage</module>-->
-<!--    <module>kie-plugins-testing</module>-->
+    <module>kie-integration-test-coverage</module>
+    <module>kie-plugins-testing</module>
     <module>kie-spring-boot</module>
     <module>camel-container-tests</module>
     <module>optaplanner-workbench-models</module>
-    <module>drools-ha</module>
   </modules>
 
   <dependencyManagement>
@@ -99,7 +81,7 @@
       <dependency>
         <groupId>org.optaplanner</groupId>
         <artifactId>optaplanner-bom</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${version.org.optaplanner}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -120,7 +102,7 @@
       <dependency>
         <groupId>org.kie</groupId>
         <artifactId>kie-pmml-bom</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -130,11 +112,6 @@
         <version>${version.org.kie}</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>javax.persistence</groupId>
-        <artifactId>javax.persistence-api</artifactId>
-        <version>${version.javax.persistence-api}</version>
       </dependency>
       <dependency>
         <groupId>org.kie</groupId>
@@ -173,7 +150,7 @@
           <plugins>
             <plugin>
               <groupId>org.codehaus.cargo</groupId>
-              <artifactId>cargo-maven2-plugin</artifactId>
+              <artifactId>cargo-maven3-plugin</artifactId>
               <configuration>
                 <configuration>
                   <properties>

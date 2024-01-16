@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.drools</groupId>
     <artifactId>droolsjbpm-integration</artifactId>
-    <version>7.58.0.Final-Micord-1</version>
+    <version>7.74.1.Final</version>
   </parent>
 
   <groupId>org.kie</groupId>
@@ -15,18 +15,6 @@
 
   <name>KIE :: Takari Plugin</name>
 
-  <distributionManagement>
-    <repository>
-      <id>micord</id>
-      <name>Micord Release repository</name>
-      <url>https://repo.micord.ru/repository/packages-releases-local/</url>
-    </repository>
-    <snapshotRepository>
-      <id>snapshots</id>
-      <name>Micord Snapshots repository</name>
-      <url>https://repo.micord.ru/repository/packages-snapshots-local/</url>
-    </snapshotRepository>
-  </distributionManagement>
   <build>
     <plugins>
       <plugin>
@@ -180,20 +168,16 @@
       <artifactId>kie-pmml</artifactId>
       <exclusions>
         <exclusion>
-          <groupId>javax.activation</groupId>
-          <artifactId>activation</artifactId>
+          <groupId>jakarta.activation</groupId>
+          <artifactId>jakarta.activation-api</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>com.sun.xml.bind</groupId>
-          <artifactId>jaxb-core</artifactId>
+          <groupId>org.glassfish.jaxb</groupId>
+          <artifactId>jaxb-runtime</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>com.sun.xml.bind</groupId>
-          <artifactId>jaxb-impl</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.jboss.spec.javax.xml.bind</groupId>
-          <artifactId>jboss-jaxb-api_2.3_spec</artifactId>
+          <groupId>org.glassfish.jaxb</groupId>
+          <artifactId>jaxb-xjc</artifactId>
         </exclusion>
       </exclusions>
       <scope>runtime</scope>

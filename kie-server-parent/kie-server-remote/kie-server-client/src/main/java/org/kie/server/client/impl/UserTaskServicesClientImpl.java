@@ -38,6 +38,7 @@ import org.kie.server.api.model.instance.TaskEventInstanceList;
 import org.kie.server.api.model.instance.TaskInstance;
 import org.kie.server.api.model.instance.TaskSummary;
 import org.kie.server.api.model.instance.TaskSummaryList;
+import org.kie.server.api.rest.RestURI;
 import org.kie.server.client.KieServicesConfiguration;
 import org.kie.server.client.UserTaskServicesClient;
 
@@ -325,11 +326,16 @@ public class UserTaskServicesClientImpl extends AbstractKieServicesClientImpl im
 
     @Override
     public void suspendTask(String containerId, Long taskId, String userId) {
-        if( config.isRest() ) {
+        this.suspendTask(containerId, taskId, userId, Collections.emptyMap());
+    }
 
-            sendTaskOperation(containerId, taskId, TASK_URI + "/" + TASK_INSTANCE_SUSPEND_PUT_URI, getUserQueryStr(userId));
+    @Override
+    public void suspendTask(String containerId, Long taskId, String userId, Map<String, Object> parameters) {
+        if( config.isRest() ) {
+            sendTaskOperation(containerId, taskId, TASK_URI + "/" + TASK_INSTANCE_SUSPEND_PUT_URI, getUserQueryStr(userId), parameters);
         } else {
-            CommandScript script = new CommandScript( Collections.singletonList( (KieServerCommand) new DescriptorCommand( "UserTaskService", "suspend", new Object[]{containerId, taskId, userId}) ) );
+            CommandScript script = new CommandScript( Collections.singletonList( (KieServerCommand) new DescriptorCommand( "UserTaskService", "suspend", 
+                    serialize(safeMap(parameters)), marshaller.getFormat().getType(),  new Object[]{containerId, taskId, userId}) ) );
             ServiceResponse<Object> response = (ServiceResponse<Object>) executeJmsCommand( script, DescriptorCommand.class.getName(), "BPM", containerId ).getResponses().get(0);
 
             throwExceptionOnFailure(response);
@@ -1131,7 +1137,7 @@ public class UserTaskServicesClientImpl extends AbstractKieServicesClientImpl im
 
             String userQuery = getUserQueryStr(userId);
             String statusQuery = getAdditionalParams(userQuery, "status", status);
-            String queryString = getPagingQueryString(statusQuery, page, pageSize)+"&sort="+sort+"&sortOrder="+sortOrder+"&filter="+filter;
+            String queryString = getPagingQueryString(statusQuery, page, pageSize)+"&sort="+sort+"&sortOrder="+sortOrder+"&filter="+RestURI.encode(filter);
 
             taskSummaryList = makeHttpGetRequestAndCreateCustomResponse(
                     build(loadBalancer.getUrl(), QUERY_URI + "/" + TASKS_ASSIGN_POT_OWNERS_GET_URI, valuesMap) + queryString , TaskSummaryList.class);
@@ -1389,7 +1395,7 @@ public class UserTaskServicesClientImpl extends AbstractKieServicesClientImpl im
             String queryString = getPagingQueryString(statusQuery, page, pageSize)+"&sort="+sort+"&sortOrder="+sortOrder;
 
             result = makeHttpGetRequestAndCreateCustomResponse(
-                    build(loadBalancer.getUrl(), QUERY_URI + "/" + TASKS_BY_VAR_NAME_GET_URI, valuesMap) + queryString + "&varValue=" + variableValue, TaskSummaryList.class);
+                    build(loadBalancer.getUrl(), QUERY_URI + "/" + TASKS_BY_VAR_NAME_GET_URI, valuesMap) + queryString + "&varValue=" + RestURI.encode(variableValue), TaskSummaryList.class);
 
 
 

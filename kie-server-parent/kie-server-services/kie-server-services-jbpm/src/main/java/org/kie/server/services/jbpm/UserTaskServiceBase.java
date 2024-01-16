@@ -17,6 +17,7 @@ package org.kie.server.services.jbpm;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +89,7 @@ public class UserTaskServiceBase {
     }
 
     public void claim(String containerId, Number taskId, String userId) {
+        containerId = context.getContainerId(containerId, new ByTaskIdContainerLocator(taskId.longValue()));
         userId = getUser(userId);
         logger.debug("About to claim task with id '{}' as user '{}'", taskId, userId);
         userTaskService.claim(containerId, taskId.longValue(), userId);
@@ -96,6 +98,7 @@ public class UserTaskServiceBase {
     public void claim(String containerId, Collection<Long> taskIds, String userId) {
         userId = getUser(userId);
         taskIds = convert(taskIds);
+        containerId = context.getContainerId(containerId, new ByTaskIdContainerLocator(((List<Long>)taskIds).get(0)));
         logger.debug("About to claim task with ids '{}' as user '{}'", taskIds, userId);
         userTaskService.claim(containerId, taskIds, userId);
     }
@@ -196,11 +199,15 @@ public class UserTaskServiceBase {
 
     }
 
-    public void suspend(String containerId, Number taskId, String userId) {
+    public void suspend(String containerId, Number taskId, String userId, String payload, String marshallingType) {
         containerId = context.getContainerId(containerId, new ByTaskIdContainerLocator(taskId.longValue()));
         userId = getUser(userId);
-        logger.debug("About to suspend task with id '{}' as user '{}'", taskId, userId);
-        userTaskService.suspend(containerId, taskId.longValue(), userId);
+        Map<String, Object> parameters = Collections.emptyMap();
+        if(payload != null && !payload.trim().isEmpty()) {
+            parameters = marshallerHelper.unmarshal(containerId, payload, marshallingType, Map.class);
+        }
+        logger.debug("About to suspend task with id '{}' as user '{}' with parameters {}", taskId, userId, parameters);
+        userTaskService.suspend(containerId, taskId.longValue(), userId, parameters);
     }
 
     public void nominate(String containerId, Number taskId, String userId, List<String> potentialOwners) {

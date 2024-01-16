@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.kie</groupId>
     <artifactId>kie-spring-boot-samples</artifactId>
-    <version>7.58.0.Final-Micord-1</version>
+    <version>7.74.1.Final</version>
   </parent>
   <artifactId>kie-server-spring-boot-kafka-sample</artifactId>
 
@@ -21,7 +21,7 @@
       <dependency>
         <groupId>org.jbpm</groupId>
         <artifactId>jbpm-event-emitters-kafka</artifactId>
-        <version>${org.kie.version}</version>
+        <version>${project.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -118,8 +118,8 @@
       <scope>test</scope>
       <exclusions>
         <exclusion>
-          <groupId>org.jboss.spec.javax.ws.rs</groupId>
-          <artifactId>jboss-jaxrs-api_2.1_spec</artifactId>
+          <groupId>jakarta.ws.rs</groupId>
+          <artifactId>jakarta.ws.rs-api</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -140,6 +140,13 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>toxiproxy</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Test - Wildfly Elytron -->
+    <dependency>
+      <groupId>org.wildfly.security</groupId>
+      <artifactId>wildfly-elytron-auth-server</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

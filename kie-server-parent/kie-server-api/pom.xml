@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.kie.server</groupId>
     <artifactId>kie-server-parent</artifactId>
-    <version>7.58.0.Final-Micord-1</version>
+    <version>7.74.1.Final</version>
   </parent>
 
   <artifactId>kie-server-api</artifactId>
@@ -133,13 +133,13 @@
     </dependency>
 
     <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-core</artifactId>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-xjc</artifactId>
       <scope>test</scope>
     </dependency>
     <!-- TRUSTY -->
@@ -161,6 +161,12 @@
     <dependency>
       <groupId>org.kie</groupId>
       <artifactId>kie-ci</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.skyscreamer</groupId>
+      <artifactId>jsonassert</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

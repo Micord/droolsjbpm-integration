@@ -17,6 +17,7 @@
 package org.kie.server.services.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -72,6 +73,7 @@ import org.kie.server.services.api.StartupStrategy;
 import org.kie.server.services.impl.controller.DefaultRestControllerImpl;
 import org.kie.server.services.impl.locator.ContainerLocatorProvider;
 import org.kie.server.services.impl.policy.PolicyManager;
+import org.kie.server.services.impl.security.ElytronIdentityProvider;
 import org.kie.server.services.impl.security.JACCIdentityProvider;
 import org.kie.server.services.impl.storage.KieServerState;
 import org.kie.server.services.impl.storage.KieServerStateRepository;
@@ -79,6 +81,8 @@ import org.kie.server.services.impl.storage.file.KieServerStateFileRepository;
 import org.kie.server.services.impl.util.KieServerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static java.util.Collections.singletonMap;
 
 public class KieServerImpl implements KieServer {
 
@@ -150,7 +154,11 @@ public class KieServerImpl implements KieServer {
         logger.info("Configured '{}' server state repository", this.repository.getClass().getSimpleName());
         
         this.context = new KieServerRegistryImpl();
-        this.context.registerIdentityProvider(new JACCIdentityProvider());
+        if (ElytronIdentityProvider.available()) {
+            this.context.registerIdentityProvider(new ElytronIdentityProvider());
+        } else {
+            this.context.registerIdentityProvider(new JACCIdentityProvider());
+        }
         this.context.registerStateRepository(repository);
         // load available container locators
         ContainerLocatorProvider.get();
@@ -158,6 +166,12 @@ public class KieServerImpl implements KieServer {
         ContainerManager containerManager = getContainerManager();
 
         KieServerState currentState = repository.load(KieServerEnvironment.getServerId());
+
+        // we sync env with state just in case for some env entries only
+        // if there is an update we just need to store it again
+        if (updateMutableEnvironmentState(currentState)) {
+            repository.store(KieServerEnvironment.getServerId(), currentState);
+        }
 
         List<KieServerExtension> extensions = sortKnownExtensions();
 
@@ -194,6 +208,39 @@ public class KieServerImpl implements KieServer {
         startupStrategy.startup(this, containerManager, currentState, kieServerActive);
         
         eventSupport.fireAfterServerStarted(this);
+    }
+
+    /**
+     * we allow some config items to be overwritten by properties
+     * @param currentState
+     */
+    private boolean updateMutableEnvironmentState(KieServerState currentState) {
+        boolean updated = false;
+        for (String key : Arrays.asList(KieServerConstants.CFG_KIE_CONTROLLER_USER, KieServerConstants.CFG_KIE_CONTROLLER_PASSWORD, KieServerConstants.CFG_KIE_CONTROLLER_TOKEN)) {
+            updated |= updateConfigItemFromEnv(currentState, key);
+        }
+        return updated;
+    }
+
+    private boolean updateConfigItemFromEnv(KieServerState state, String key) {
+        String envValue = System.getProperty(key);
+        KieServerConfigItem item = state.getConfiguration().getConfigItem(key);
+
+        if (envValue == null && item == null) {
+            return false;
+        } else if (envValue != null && item != null && envValue.equals(state.getConfiguration().getConfigItem(key).getValue())) {
+            return false;
+        }
+
+        // the only cases left is when one of them is null and the other one not or both are different (value is changed)
+        if (envValue != null) {
+            logger.info("Property {} has a value different from environment. Updating current server state config item to {}", key, envValue);
+            state.getConfiguration().addConfigItem(new KieServerConfigItem(key, envValue, String.class.getName()));
+        } else {
+            logger.info("Property {} has null value from environment. Removing current server state config item", key);
+            state.getConfiguration().removeConfigItem(new KieServerConfigItem(key, item.getValue(), String.class.getName()));
+        }
+        return true;
     }
 
     public KieServerRegistry getServerRegistry() {
@@ -548,6 +595,10 @@ public class KieServerImpl implements KieServer {
     }
 
     public ServiceResponse<Void> disposeContainer(String containerId) {
+        return this.disposeContainer(containerId, null);
+    }
+
+    public ServiceResponse<Void> disposeContainer(String containerId, Boolean abortInstances) {
         List<Message> messages = new CopyOnWriteArrayList<Message>();
         try {
             KieContainerInstanceImpl kci = context.unregisterContainer(containerId);
@@ -564,7 +615,7 @@ public class KieServerImpl implements KieServer {
                             // process server extensions
                             List<KieServerExtension> extensions = context.getServerExtensions();
                             for (KieServerExtension extension : extensions) {
-                                extension.disposeContainer(containerId, kci, new HashMap<String, Object>());
+                                extension.disposeContainer(containerId, kci, singletonMap(KieServerConstants.IS_DISPOSE_CONTAINER_PARAM, abortInstances));
                                 logger.debug("Container {} (for release id {}) {} shutdown: DONE", containerId, kci.getResource().getReleaseId(), extension);
                                 disposedExtensions.add(extension);
                             }
@@ -593,6 +644,7 @@ public class KieServerImpl implements KieServer {
                         }
                         InternalKieContainer kieContainer = kci.getKieContainer();
                         kci.setKieContainer(null); // helps reduce concurrent access issues
+                        kci.disposeMarshallers();
                         // this may fail, but we already removed the container from the registry
                         kieContainer.dispose();
                         ks.getRepository().removeKieModule(releaseId);

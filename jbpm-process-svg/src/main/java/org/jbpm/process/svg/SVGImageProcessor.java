@@ -17,8 +17,10 @@ package org.jbpm.process.svg;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.util.XMLResourceDescriptor;
@@ -31,6 +33,7 @@ import org.w3c.dom.Document;
 import static org.jbpm.process.svg.processor.SVGProcessor.ACTIVE_BORDER_COLOR;
 import static org.jbpm.process.svg.processor.SVGProcessor.COMPLETED_BORDER_COLOR;
 import static org.jbpm.process.svg.processor.SVGProcessor.COMPLETED_COLOR;
+import static org.jbpm.process.svg.processor.SVGProcessor.ACTIVE_ASYNC_BORDER_COLOR;
 
 public class SVGImageProcessor {
 
@@ -40,7 +43,7 @@ public class SVGImageProcessor {
         this(svg, true);
     }
 
-    public SVGImageProcessor(InputStream svg, Map<String, String> subProcessLinks) {
+    public SVGImageProcessor(InputStream svg, Map<String, String> subProcessLinks, Map<String, Long> badges) {
         try {
             String parser = XMLResourceDescriptor.getXMLParserClassName();
             SAXSVGDocumentFactory factory = new SAXSVGDocumentFactory(parser);
@@ -50,6 +53,7 @@ public class SVGImageProcessor {
             svgProcessor = new SVGProcessorFactory().create(svgDocument, true);
             if (svgProcessor instanceof StunnerSVGProcessor) {
                 ((StunnerSVGProcessor) svgProcessor).setSubProcessLinks(subProcessLinks);
+                ((StunnerSVGProcessor) svgProcessor).setNodeBadges(badges);
             }
             svgProcessor.processNodes(svgDocument.getChildNodes());
 
@@ -81,17 +85,25 @@ public class SVGImageProcessor {
     //Static methods to keep backward compatibility
 
     public static String transform(InputStream svg, List<String> completed, List<String> active) {
-        return transform(svg, completed, active, null, COMPLETED_COLOR, COMPLETED_BORDER_COLOR, ACTIVE_BORDER_COLOR);
+        return transform(svg, completed, active, null, COMPLETED_COLOR, COMPLETED_BORDER_COLOR, ACTIVE_BORDER_COLOR, null);
     }
 
-    public static String transform(InputStream svg, List<String> completed, List<String> active, Map<String, String> subProcessLinks){
-        return transform(svg, completed, active, subProcessLinks, COMPLETED_COLOR, COMPLETED_BORDER_COLOR, ACTIVE_BORDER_COLOR);
+    public static String transform(InputStream svg, List<String> completed, List<String> active, Map<String, String> subProcessLinks) {
+        return transform(svg, completed, active, subProcessLinks, COMPLETED_COLOR, COMPLETED_BORDER_COLOR, ACTIVE_BORDER_COLOR, null);
     }
 
     public static String transform(InputStream svg, List<String> completed, List<String> active,
                                    Map<String, String> subProcessLinks, String completedNodeColor,
-                                   String completedNodeBorderColor, String activeNodeBorderColor) {
-        SVGProcessor processor = new SVGImageProcessor(svg, subProcessLinks).getProcessor();
+                                   String completedNodeBorderColor, String activeNodeBorderColor, Map<String, Long> badges) {
+        return transform(svg, completed, active, Collections.emptyList(), subProcessLinks, completedNodeColor, completedNodeBorderColor, activeNodeBorderColor, "", badges);
+    }
+
+
+    public static String transform(InputStream svg, List<String> completed, List<String> active, List<String> activeAsync,
+                                   Map<String, String> subProcessLinks, String completedNodeColor,
+                                   String completedNodeBorderColor, String activeNodeBorderColor,
+                                   String activeAsyncNodeBorderColor, Map<String, Long> badges) {
+        SVGProcessor processor = new SVGImageProcessor(svg, subProcessLinks, badges).getProcessor();
 
         for (String nodeId : completed) {
             if (!active.contains(nodeId)) {
@@ -102,12 +114,17 @@ public class SVGImageProcessor {
             processor.defaultActiveTransformation(nodeId, activeNodeBorderColor);
         }
 
+        for (String nodeId : activeAsync) {
+            processor.defaultActiveAsyncTransformation(nodeId, activeAsyncNodeBorderColor);
+        }
+
         if (subProcessLinks != null) {
 
             for (Map.Entry<String, String> subProcessLink : subProcessLinks.entrySet()) {
                 processor.defaultSubProcessLinkTransformation(subProcessLink.getKey(), subProcessLink.getValue());
             }
         }
+
         return processor.getSVG();
     }
 

@@ -188,9 +188,8 @@ public class JBPMAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(name = "identityProvider")
-    public IdentityProvider identityProvider() {
-
-        return new SpringSecurityIdentityProvider();
+    public IdentityProvider identityProvider(ApplicationContext context) {
+        return new SpringSecurityIdentityProvider(context);
     }
 
     @Bean
@@ -232,7 +231,7 @@ public class JBPMAutoConfiguration {
     @ConditionalOnMissingBean(name = "runtimeManagerFactory")
     public RuntimeManagerFactory runtimeManagerFactory(UserGroupCallback userGroupCallback, UserInfo userInfo) {
 
-        SpringRuntimeManagerFactoryImpl runtimeManager = new SpringRuntimeManagerFactoryImpl();
+        SpringRuntimeManagerFactoryImpl runtimeManager = new SpringRuntimeManagerFactoryImpl(this.applicationContext);
         runtimeManager.setTransactionManager((AbstractPlatformTransactionManager) transactionManager);
         runtimeManager.setUserGroupCallback(userGroupCallback);
         runtimeManager.setUserInfo(userInfo);
@@ -480,13 +479,14 @@ public class JBPMAutoConfiguration {
     @Bean
     @ConditionalOnClass({ CaseRuntimeDataServiceImpl.class })
     @ConditionalOnMissingBean(name = "caseRuntimeService")
-    public CaseRuntimeDataService caseRuntimeService(CaseIdGenerator caseIdGenerator, RuntimeDataService runtimeDataService, DeploymentService deploymentService, TransactionalCommandService transactionalCommandService, IdentityProvider identityProvider) {
+    public CaseRuntimeDataService caseRuntimeService(CaseIdGenerator caseIdGenerator, RuntimeDataService runtimeDataService, DeploymentService deploymentService, TransactionalCommandService transactionalCommandService, IdentityProvider identityProvider, UserGroupCallback userGroupCallback) {
 
         CaseRuntimeDataServiceImpl caseRuntimeDataService = new CaseRuntimeDataServiceImpl();
         caseRuntimeDataService.setCaseIdGenerator(caseIdGenerator);
         caseRuntimeDataService.setRuntimeDataService(runtimeDataService);
         caseRuntimeDataService.setCommandService(transactionalCommandService);
         caseRuntimeDataService.setIdentityProvider(identityProvider);
+        caseRuntimeDataService.setUserGroupCallback(userGroupCallback);
 
         // configure case mgmt services as listeners
         ((KModuleDeploymentService)deploymentService).addListener(caseRuntimeDataService);
