@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import org.kie.server.services.taskassigning.core.TaskAssigningRuntimeException;
 import org.kie.server.services.taskassigning.core.model.TaskAssigningSolution;
 import org.kie.server.services.taskassigning.core.model.User;
-import org.optaplanner.core.impl.score.director.ScoreDirector;
-import org.optaplanner.core.impl.solver.ProblemFactChange;
+import org.optaplanner.core.api.score.director.ScoreDirector;
+import org.optaplanner.core.api.solver.ProblemFactChange;
 
 public class AddUserProblemFactChange implements ProblemFactChange<TaskAssigningSolution> {
 

@@ -25,10 +25,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import org.kie.server.api.model.KieServerMode;
 import org.kie.server.controller.api.model.runtime.ServerInstanceKey;
@@ -56,7 +56,7 @@ public class ServerTemplate extends ServerTemplateKey {
         this.capabilities = new ArrayList<>(current.getCapabilities());
         this.configs = current.getConfigs().isEmpty() ? new EnumMap<>(Capability.class) : new EnumMap<>(current.getConfigs());
         this.serverInstances = current.getServerInstanceKeys().stream().map(ServerInstanceKey::new).collect(Collectors.toCollection(ArrayList::new));
-        this.mode = current.getMode(); 
+        this.mode = current.getMode();
 
     }
 

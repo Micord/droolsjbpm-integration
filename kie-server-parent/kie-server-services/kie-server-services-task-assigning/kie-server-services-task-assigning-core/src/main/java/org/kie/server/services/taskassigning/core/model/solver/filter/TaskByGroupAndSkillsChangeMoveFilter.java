@@ -22,9 +22,9 @@ import org.kie.server.services.taskassigning.core.model.Task;
 import org.kie.server.services.taskassigning.core.model.TaskAssigningSolution;
 import org.kie.server.services.taskassigning.core.model.TaskOrUser;
 import org.kie.server.services.taskassigning.core.model.User;
+import org.optaplanner.core.api.score.director.ScoreDirector;
 import org.optaplanner.core.impl.heuristic.selector.common.decorator.SelectionFilter;
 import org.optaplanner.core.impl.heuristic.selector.move.generic.ChangeMove;
-import org.optaplanner.core.impl.score.director.ScoreDirector;
 
 import static org.kie.server.services.taskassigning.core.model.solver.TaskHelper.hasAllLabels;
 import static org.kie.server.services.taskassigning.core.model.solver.TaskHelper.isPotentialOwner;

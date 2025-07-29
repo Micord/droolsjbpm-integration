@@ -27,12 +27,13 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -60,10 +61,10 @@ public class KieServerRouterUnavailabilityRecoveryTest {
     private static File repository;
 
     private static String serverUrl;
-    
+
     private WireMockServer wireMockServer;
     private int mockKieServerPort;
-    
+
     private TestConfigurationListener listener = new TestConfigurationListener();
 
     @Before
@@ -71,18 +72,18 @@ public class KieServerRouterUnavailabilityRecoveryTest {
         System.setProperty(KieServerRouterConstants.KIE_SERVER_CONTROLLER_ATTEMPT_INTERVAL, "1");
         mockKieServerPort = allocatePort();
         configureMockServer();
-                
+
         // setup repository for config of router
         repository = new File("target/unavailability-router-repo");
         repository.mkdirs();
         System.setProperty(KieServerRouterConstants.ROUTER_REPOSITORY_DIR, repository.getAbsolutePath());
 
         Configuration config = new Configuration();
-        config.addContainerHost("container1", "http://localhost:" + mockKieServerPort);       
+        config.addContainerHost("container1", "http://localhost:" + mockKieServerPort);
         config.addServerHost("server1", "http://localhost:" + mockKieServerPort);
         ContainerInfo containerInfo = new ContainerInfo("container1", "test", "org.kie:test:1.0");
         config.addContainerInfo(containerInfo);
-        
+
         FileRepository repo = new FileRepository(new KieServerRouterEnvironment());
         repo.persist(config);
 
@@ -120,7 +121,7 @@ public class KieServerRouterUnavailabilityRecoveryTest {
 
             assertEquals(1, initialConfig.getHostsPerContainer().get("container1").size());
             assertEquals(1, initialConfig.getHostsPerServer().get("server1").size());
-            
+
             WebTarget clientRequest = newRequest(serverUrl + "/containers");
             logger.debug("[GET] " + clientRequest.getUri());
 
@@ -135,16 +136,16 @@ public class KieServerRouterUnavailabilityRecoveryTest {
 
             assertEquals(1, config.getHostsPerContainer().get("container1").size());
             assertEquals(1, config.getHostsPerServer().get("server1").size());
-            
+
             wireMockServer.stop();
-            
+
             clientRequest = newRequest(serverUrl + "/containers");
             logger.debug("[GET] " + clientRequest.getUri());
 
             response = clientRequest.request(MediaType.APPLICATION_XML_TYPE).get();
             Assert.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
             response.close();
-            
+
             config = routerClient.getRouterConfig();
 
             assertEquals(1, config.getHostsPerContainer().size());
@@ -152,12 +153,12 @@ public class KieServerRouterUnavailabilityRecoveryTest {
 
             assertEquals(0, config.getHostsPerContainer().get("container1").size());
             assertEquals(0, config.getHostsPerServer().get("server1").size());
-            
+
             CountDownLatch latch = listener.activate();
             wireMockServer.start();
-            
+
             latch.await(5, TimeUnit.SECONDS);
-            
+
             clientRequest = newRequest(serverUrl + "/containers");
             logger.debug("[GET] " + clientRequest.getUri());
 
@@ -196,15 +197,15 @@ public class KieServerRouterUnavailabilityRecoveryTest {
     protected WebTarget newRequest(String uriString) {
 
         if(httpClient == null) {
-            httpClient = new ResteasyClientBuilder()
-                    .establishConnectionTimeout(10, TimeUnit.SECONDS)
-                    .socketTimeout(10, TimeUnit.SECONDS)
+            httpClient = new ResteasyClientBuilderImpl()
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(10, TimeUnit.SECONDS)
                     .register(new Authenticator(TestConfig.getUsername(), TestConfig.getPassword()))
                     .build();
         }
         return httpClient.target(uriString);
     }
-    
+
     private void configureMockServer() {
         wireMockServer = new WireMockServer(mockKieServerPort);
         wireMockServer.stubFor(get(urlEqualTo("/containers"))
@@ -225,7 +226,7 @@ public class KieServerRouterUnavailabilityRecoveryTest {
                                 "</response>")));
         wireMockServer.start();
     }
-    
+
     private class TestConfigurationListener implements ConfigurationListener {
         private CountDownLatch latch;
         @Override
@@ -234,11 +235,11 @@ public class KieServerRouterUnavailabilityRecoveryTest {
                 latch.countDown();
             }
         }
-        
-        
+
+
         public CountDownLatch activate() {
             latch = new CountDownLatch(1);
-            
+
             return latch;
         }
     }

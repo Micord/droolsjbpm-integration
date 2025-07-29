@@ -20,8 +20,8 @@ import java.util.Objects;
 
 import org.kie.server.services.taskassigning.core.model.Task;
 import org.kie.server.services.taskassigning.core.model.TaskOrUser;
-import org.optaplanner.core.impl.domain.variable.listener.VariableListener;
-import org.optaplanner.core.impl.score.director.ScoreDirector;
+import org.optaplanner.core.api.domain.variable.VariableListener;
+import org.optaplanner.core.api.score.director.ScoreDirector;
 
 import static org.kie.server.services.taskassigning.core.model.Task.END_TIME_IN_MINUTES;
 import static org.kie.server.services.taskassigning.core.model.Task.START_TIME_IN_MINUTES;
@@ -35,10 +35,10 @@ import static org.kie.server.services.taskassigning.core.model.Task.START_TIME_I
  * e.g. when sourceTask changes, the startTime and endTime of tasks {sourceTask, Task4, Task5} is recalculated
  * accordingly.
  */
-public class StartAndEndTimeUpdatingVariableListener implements VariableListener<Task> {
+public class StartAndEndTimeUpdatingVariableListener implements VariableListener<Task,Task> {
 
     @Override
-    public void beforeEntityAdded(final ScoreDirector scoreDirector, final Task task) {
+    public void beforeEntityAdded(final ScoreDirector<Task> scoreDirector, final Task task) {
         // Do nothing
     }
 

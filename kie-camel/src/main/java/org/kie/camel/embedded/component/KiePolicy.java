@@ -27,8 +27,9 @@ import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
-import org.apache.camel.component.cxf.CxfConstants;
-import org.apache.camel.component.cxf.CxfSpringEndpoint;
+import org.apache.camel.Route;
+import org.apache.camel.component.cxf.common.message.CxfConstants;
+import org.apache.camel.component.cxf.common.CxfSpringEndpoint;
 import org.apache.camel.model.BeanDefinition;
 import org.apache.camel.model.DataFormatDefinition;
 import org.apache.camel.model.MarshalDefinition;
@@ -55,12 +56,12 @@ public class KiePolicy implements Policy {
     // this should be the same namespace defined in META-INF/org.apache.camel.component file
     public static final String URI_PREFIX = "kie-local:";
 
-    public void beforeWrap(RouteContext routeContext, ProcessorDefinition<?> processorDefinition) {
-        augmentNodes(routeContext, processorDefinition, new HashSet<Object>());
+    @Override
+    public void beforeWrap(Route route, ProcessorDefinition<?> processorDefinition) {
+        augmentNodes(route, processorDefinition, new HashSet<Object>());
     }
 
-    public Processor wrap(RouteContext routeContext, Processor processor) {
-        RouteDefinition routeDef = routeContext.getRoute();
+    public Processor wrap(Route routeDef, Processor processor) {
 
         ToDefinition toKie = getKieNode(routeDef);
 
@@ -84,7 +85,7 @@ public class KiePolicy implements Policy {
         return toDrools;
     }
 
-    public static void augmentNodes(RouteContext routeContext, ProcessorDefinition<?> nav, Set visited) {
+    public static void augmentNodes(Route routeContext, ProcessorDefinition<?> nav, Set visited) {
         if (!nav.getOutputs().isEmpty()) {
 
             List<ProcessorDefinition<?>> outputs = nav.getOutputs();
@@ -201,7 +202,7 @@ public class KiePolicy implements Policy {
     }
 
     /** Clones the passed JaxbDataFormat and then augments it with with Drools related namespaces
-     * 
+     *
      * @param jaxbDataFormat
      * @return */
     public static JaxbDataFormat augmentJaxbDataFormatDefinition(JaxbDataFormat jaxbDataFormat) {

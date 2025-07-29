@@ -18,17 +18,17 @@ package org.kie.server.controller.websocket;
 import java.util.Collections;
 import java.util.ServiceLoader;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Any;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
-import javax.websocket.CloseReason;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.server.PathParam;
-import javax.websocket.server.ServerEndpoint;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.inject.Any;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
+import jakarta.websocket.CloseReason;
+import jakarta.websocket.OnClose;
+import jakarta.websocket.OnError;
+import jakarta.websocket.OnOpen;
+import jakarta.websocket.Session;
+import jakarta.websocket.server.PathParam;
+import jakarta.websocket.server.ServerEndpoint;
 
 import org.kie.server.api.model.KieServerInfo;
 import org.kie.server.controller.api.model.runtime.ServerInstance;
@@ -42,17 +42,17 @@ import org.slf4j.LoggerFactory;
 
 @ServerEndpoint("/websocket/controller/{server-id}")
 public class WebSocketKieServerControllerImpl extends KieServerControllerImpl {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(WebSocketKieServerControllerImpl.class);
-    
+
     private WebSocketSessionManager manager = WebSocketSessionManager.getInstance();
-    
+
     @Inject @Any
     private Instance<KieServerTemplateStorage> templateStorage;
-    
+
     @Inject @Any
     private Instance<NotificationService> notificationService;
-    
+
     public WebSocketKieServerControllerImpl() {
         ServiceLoader<PersistingServerTemplateStorageService> storageServices = ServiceLoader.load(PersistingServerTemplateStorageService.class);
         if (storageServices != null && storageServices.iterator().hasNext()) {
@@ -74,7 +74,7 @@ public class WebSocketKieServerControllerImpl extends KieServerControllerImpl {
             logger.warn("Notification service not defined. Default notification: LoggingNotificationService will be used");
         }
     }
-    
+
     @PostConstruct
     public void configure() {
         // @PostConstruct can be called in Tomcat so could be null
@@ -90,7 +90,7 @@ public class WebSocketKieServerControllerImpl extends KieServerControllerImpl {
         }
     }
 
-    
+
     @OnOpen
     public void onKieServerConnect(@PathParam("server-id") String serverId, Session session) {
         synchronized (manager) {
@@ -98,7 +98,7 @@ public class WebSocketKieServerControllerImpl extends KieServerControllerImpl {
             manager.getHandler(session.getId()).addHandler(new ConnectedKieServerHandler(manager, session, this, serverId));
         }
     }
-    
+
     @OnClose
     public void onKieServerDisconnect(@PathParam("server-id") String serverId, Session session, CloseReason closeReason) {
         synchronized (manager) {
@@ -110,7 +110,7 @@ public class WebSocketKieServerControllerImpl extends KieServerControllerImpl {
             }
         }
     }
-    
+
     @OnError
     public void onKieServerError(Session session, Throwable e) {
 //        manager.removeSession(session);
@@ -121,6 +121,6 @@ public class WebSocketKieServerControllerImpl extends KieServerControllerImpl {
     protected void notifyOnConnect(ServerInstance serverInstance) {
         // mute the events until server is notified with configuration
     }
-    
-    
+
+
 }

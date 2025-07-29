@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.kie.server.api.model.instance.SolverInstance;
 import org.kie.server.client.jms.ResponseHandler;
-import org.optaplanner.core.impl.solver.ProblemFactChange;
+import org.optaplanner.core.api.solver.ProblemFactChange;
 
 public interface SolverServicesClient {
 
@@ -58,4 +58,3 @@ public interface SolverServicesClient {
 
     void setResponseHandler(ResponseHandler responseHandler);
 }
-

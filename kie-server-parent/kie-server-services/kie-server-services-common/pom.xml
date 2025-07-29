@@ -101,7 +101,7 @@
     <!-- RestEasy JAX-RS dependencies -->
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
-      <artifactId>resteasy-jaxrs</artifactId>
+      <artifactId>resteasy-core-spi</artifactId>
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
@@ -131,7 +131,7 @@
     </dependency>
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
-      <artifactId>resteasy-jackson-provider</artifactId>
+      <artifactId>resteasy-jackson2-provider</artifactId>
       <scope>runtime</scope>
     </dependency>
     <!-- JSON (un)marshalling -->
@@ -149,7 +149,7 @@
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
-      <artifactId> jackson-module-jaxb-annotations</artifactId>
+      <artifactId>jackson-module-jakarta-xmlbind-annotations</artifactId>
     </dependency>
 
     <dependency>

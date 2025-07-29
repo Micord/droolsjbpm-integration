@@ -106,77 +106,77 @@
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-integ-tests-common</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-integ-tests-drools</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-integ-tests-jbpm</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-integ-tests-optaplanner</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-integ-tests-dmn</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-integ-tests-controller</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-integ-tests-policy</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-integ-tests-router</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-integ-tests-case-id-generator</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-integ-tests-all</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-integ-tests-jbpm-search</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-integ-tests-custom-extension-rest</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-integ-tests-custom-extension-services</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-integ-tests-custom-extension-client</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-integ-tests-custom-extension-prometheus</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.cargo</groupId>
@@ -201,12 +201,12 @@
       <dependency>
         <groupId>org.kie</groupId>
         <artifactId>kie-tomcat-integration</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.kie.server</groupId>
         <artifactId>kie-server-test-web-service</artifactId>
-        <version>${version.org.kie}</version>
+        <version>${project.version}</version>
         <type>war</type>
       </dependency>
     </dependencies>

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.naming.InitialContext;
-import javax.transaction.UserTransaction;
+import jakarta.transaction.UserTransaction;
 
 import org.drools.persistence.jta.JtaTransactionManager;
 import org.jbpm.process.audit.AuditLogService;
@@ -53,7 +53,7 @@ public class UserManagedSharedTaskServiceSpringTest extends AbstractJbpmSpringPa
     }
 
 	/* The purpose of the shared entity manager is to allow the application domain
-	 * and JBPM domain to be persisted by a single entity manager and transaction. 
+	 * and JBPM domain to be persisted by a single entity manager and transaction.
 	 */
     @Test
     public void testSpringWithJTAAndSharedEMFAndUserManagedTx() throws Exception {

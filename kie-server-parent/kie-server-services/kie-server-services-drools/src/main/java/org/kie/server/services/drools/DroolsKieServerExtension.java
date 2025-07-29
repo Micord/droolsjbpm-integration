@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -24,8 +24,8 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
 
 import org.kie.api.remote.Remotable;
 import org.kie.scanner.KieModuleMetaData;
@@ -153,13 +153,13 @@ public class DroolsKieServerExtension implements KieServerExtension {
         ServiceLoader<KieServerApplicationComponentsService> appComponentsServices
             = ServiceLoader.load(KieServerApplicationComponentsService.class);
         List<Object> appComponentsList =  new ArrayList<Object>();
-        Object [] services = { 
+        Object [] services = {
                 batchCommandService,
                 rulesExecutionService,
                 registry
 
         };
-        for( KieServerApplicationComponentsService appComponentsService : appComponentsServices ) { 
+        for( KieServerApplicationComponentsService appComponentsService : appComponentsServices ) {
             appComponentsList.addAll(appComponentsService.getAppComponents(EXTENSION_NAME, type, services));
         }
         return appComponentsList;
@@ -238,15 +238,15 @@ public class DroolsKieServerExtension implements KieServerExtension {
             extraClasses.add(classToAdd);
         }
     }
-    
+
 
     @Override
     public List<Message> healthCheck(boolean report) {
         List<Message> messages = KieServerExtension.super.healthCheck(report);
-        
+
         if (report) {
             messages.add(new Message(Severity.INFO, getExtensionName() + " is alive"));
-        }        
+        }
         return messages;
     }
 }

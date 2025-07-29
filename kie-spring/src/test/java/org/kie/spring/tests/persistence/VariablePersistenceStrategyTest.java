@@ -44,9 +44,9 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.transaction.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.transaction.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -318,7 +318,7 @@ public class VariablePersistenceStrategyTest {
         //
         //        workItem = handler.getWorkItem();
         //        assertNotNull( workItem );
-        //        
+        //
         //        log.debug("### Retrieving variable instance infos ###");
         //        result = emf.createEntityManager().createQuery("select i from VariableInstanceInfo i").getResultList();
         //        assertEquals(8, result.size());
@@ -326,7 +326,7 @@ public class VariablePersistenceStrategyTest {
         //            assertTrue(VariableInstanceInfo.class.isAssignableFrom(o.getClass()));
         //            log.debug(o);
         //        }
-        //        
+        //
         //        log.debug("### Retrieving process instance ###");
         //        ksession = JPAKnowledgeService.loadStatefulKnowledgeSession(id, kbase, null, env);
         //        processInstance = (WorkflowProcessInstance)
@@ -345,10 +345,10 @@ public class VariablePersistenceStrategyTest {
         //
         //        workItem = handler.getWorkItem();
         //        assertNotNull(workItem);
-        //        
+        //
         //        result = emf.createEntityManager().createQuery("select i from VariableInstanceInfo i").getResultList();
         //        assertEquals(8, result.size());
-        //        
+        //
         //        log.debug("### Retrieving process instance ###");
         //        ksession = JPAKnowledgeService.loadStatefulKnowledgeSession(id, kbase, null, env);
         //        processInstance = (WorkflowProcessInstance)
@@ -367,10 +367,10 @@ public class VariablePersistenceStrategyTest {
         //
         //        workItem = handler.getWorkItem();
         //        assertNull(workItem);
-        //        
+        //
         //        result = emf.createEntityManager().createQuery("select i from VariableInstanceInfo i").getResultList();
         //        //This was 6.. but I change it to 0 because all the variables will go away with the process instance..
-        //        //we need to change that to leave the variables there??? 
+        //        //we need to change that to leave the variables there???
         //        assertEquals(0, result.size());
         //
         //        ksession = JPAKnowledgeService.loadStatefulKnowledgeSession(id, kbase, null, env);
@@ -429,7 +429,7 @@ public class VariablePersistenceStrategyTest {
     //        processInstance = ksession.getProcessInstance( processInstance.getId() );
     //        assertNull( processInstance );
     //    }
-    //    
+    //
     //    public void testPersistenceVariablesSubProcess() {
     //        KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
     //        kbuilder.add( new ClassPathResource( "VariablePersistenceStrategySubProcess.rf" ), ResourceType.DRF );
@@ -488,5 +488,5 @@ public class VariablePersistenceStrategyTest {
     //        processInstance = ksession.getProcessInstance( processInstance.getId() );
     //        assertNull( processInstance );
     //    }
-    //    
+    //
 }

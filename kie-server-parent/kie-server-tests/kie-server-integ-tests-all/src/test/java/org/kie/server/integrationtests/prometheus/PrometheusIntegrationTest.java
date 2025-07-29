@@ -29,14 +29,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jboss.resteasy.client.jaxrs.BasicAuthentication;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.internal.BasicAuthentication;
+import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -111,7 +112,7 @@ public class PrometheusIntegrationTest extends JbpmKieServerBaseIntegrationTest 
 
     protected String getMetrics() {
         if (httpClient == null) {
-            httpClient = new ResteasyClientBuilder().readTimeout(10, TimeUnit.SECONDS).build();
+            httpClient = new ResteasyClientBuilderImpl().readTimeout(10, TimeUnit.SECONDS).build();
         }
 
         WebTarget webTarget = httpClient.target(URI.create(TestConfig.getKieServerHttpUrl()).resolve("../rest/metrics"));
@@ -223,10 +224,10 @@ public class PrometheusIntegrationTest extends JbpmKieServerBaseIntegrationTest 
 //              "kie_server_job_duration_seconds_sum{container_id=\"\",command_name=\"" + PRINT_OUT_COMMAND + "\",}"
           );
     }
-    
+
 	@Test
 	@Category(JEEOnly.class) // Executor in kie-server-integ-tests-all is using JMS for execution. Skipping test for non JEE containers as they don't have JMS.
-	public void testPrometheusJobErrorMetrics() throws Exception {		
+	public void testPrometheusJobErrorMetrics() throws Exception {
 		Integer numberOfRetries = 0;
 		JobRequestInstance jobRequestErrorInstanceNow = createJobRequestExecutionErrorInstance(numberOfRetries);
 		Long jobId = jobServicesClient.scheduleRequest(jobRequestErrorInstanceNow);
@@ -236,19 +237,19 @@ public class PrometheusIntegrationTest extends JbpmKieServerBaseIntegrationTest 
                 "kie_server_job_in_retry_total\\{container_id=\"\",failed=\"true\",command_name=\""
                         + JOB_EXECUTION_ERROR_COMMAND + "\",\\} [1-9]\\.0");
 	}
-	
+
 	@Test
 	@Category(JEEOnly.class) // Executor in kie-server-integ-tests-all is using JMS for execution. Skipping test for non JEE containers as they don't have JMS.
-	public void testPrometheusJobErrorMetricsWithMultipleRetries() throws Exception {		
+	public void testPrometheusJobErrorMetricsWithMultipleRetries() throws Exception {
 		Integer numberOfRetries = 10;
 		JobRequestInstance jobRequestErrorInstanceNow = createJobRequestExecutionErrorInstance(numberOfRetries);
 		Long jobId = jobServicesClient.scheduleRequest(jobRequestErrorInstanceNow);
-		KieServerSynchronization.waitForJobToFinish(jobServicesClient, jobId);		
-		assertThat(getMetrics()).contains(				
+		KieServerSynchronization.waitForJobToFinish(jobServicesClient, jobId);
+		assertThat(getMetrics()).contains(
 				"kie_server_job_error_total{container_id=\"\",failed=\"true\",command_name=\""
 						+ JOB_EXECUTION_ERROR_COMMAND + "\",} ");
 	}
-   
+
     private String startUserTaskCase(String owner, String contact) {
         Map<String, Object> data = new HashMap<>();
         data.put("s", "first case started");
@@ -272,10 +273,10 @@ public class PrometheusIntegrationTest extends JbpmKieServerBaseIntegrationTest 
         jobRequestInstance.setData(data);
         return jobRequestInstance;
     }
-    
+
     private JobRequestInstance createJobRequestExecutionErrorInstance(Integer numberOfRetries) {
         Map<String, Object> data = new HashMap<>();
-        data.put("businessKey", BUSINESS_KEY);   
+        data.put("businessKey", BUSINESS_KEY);
         data.put("retries", numberOfRetries);
         JobRequestInstance jobRequestInstance = new JobRequestInstance();
         jobRequestInstance.setCommand(JOB_EXECUTION_ERROR_COMMAND);

@@ -24,7 +24,7 @@ import org.kie.server.services.taskassigning.core.model.Task;
 import org.kie.server.services.taskassigning.core.model.TaskAssigningSolution;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.optaplanner.core.impl.score.director.ScoreDirector;
+import org.optaplanner.core.api.score.director.ScoreDirector;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.never;

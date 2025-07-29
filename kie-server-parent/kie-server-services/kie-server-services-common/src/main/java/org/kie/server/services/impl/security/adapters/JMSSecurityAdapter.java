@@ -17,7 +17,6 @@ package org.kie.server.services.impl.security.adapters;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -32,7 +31,6 @@ import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
-import javax.security.sasl.RealmCallback;
 
 import org.kie.server.api.KieServerConstants;
 import org.kie.server.api.security.SecurityAdapter;
@@ -151,17 +149,17 @@ public class JMSSecurityAdapter implements SecurityAdapter {
             if (principals != null) {
 
                 roles = new ArrayList<String>();
-                for (Principal principal : principals) {
-                    if (principal instanceof Group) {
-                        Enumeration<? extends Principal> groups = ((Group) principal).members();
-
-                        while (groups.hasMoreElements()) {
-                            Principal groupPrincipal = (Principal) groups.nextElement();
-                            roles.add(groupPrincipal.getName());
-                        }
-                        break;
-                    }
-                }
+//                for (Principal principal : principals) {
+//                    if (principal instanceof Group) {
+//                        Enumeration<? extends Principal> groups = ((Group) principal).members();
+//
+//                        while (groups.hasMoreElements()) {
+//                            Principal groupPrincipal = (Principal) groups.nextElement();
+//                            roles.add(groupPrincipal.getName());
+//                        }
+//                        break;
+//                    }
+//                }
             }
             roles.addAll(getRolesFromAdapter(subject));
         }
@@ -222,10 +220,10 @@ public class JMSSecurityAdapter implements SecurityAdapter {
                 } else if (current instanceof PasswordCallback) {
                     PasswordCallback pcb = (PasswordCallback) current;
                     pcb.setPassword(pass.toCharArray());
-                } else if (current instanceof RealmCallback) {
+                } /*else if (current instanceof RealmCallback) {
                     RealmCallback realmCallback = (RealmCallback) current;
                     realmCallback.setText(realmCallback.getDefaultText());
-                }
+                }*/
             }
 
         }

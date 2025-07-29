@@ -20,15 +20,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Variant;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Variant;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -82,7 +82,7 @@ public class TaskAssigningRuntimeResource {
     @Path(TASK_ASSIGNING_EXECUTE_PLANNING_URI)
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response executePlanning(@javax.ws.rs.core.Context HttpHeaders headers,
+    public Response executePlanning(@jakarta.ws.rs.core.Context HttpHeaders headers,
                                     @ApiParam(value = "identifier of the user to execute the planning on behalf of", required = true) @QueryParam("user") String userId,
                                     @ApiParam(value = "planning definition represented as PlanningItemList", required = true) String payload) {
         final Variant v = getVariant(headers);
@@ -108,7 +108,7 @@ public class TaskAssigningRuntimeResource {
     @Path(TASK_ASSIGNING_QUERIES_TASK_DATA_URI)
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response executeTasksQuery(@javax.ws.rs.core.Context HttpHeaders headers,
+    public Response executeTasksQuery(@jakarta.ws.rs.core.Context HttpHeaders headers,
                                       @ApiParam(value = "map with the query parameters", required = true, examples = @Example(value = {
                                               @ExampleProperty(mediaType = MediaType.APPLICATION_JSON, value = TASKS_QUERY_PARAMS_MAP_EXAMPLE_JSON),
                                               @ExampleProperty(mediaType = MediaType.APPLICATION_XML, value = TASKS_QUERY_PARAMS_MAP_EXAMPLE_XML)})) String payload) {

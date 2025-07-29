@@ -21,7 +21,7 @@ import java.util.List;
 import org.kie.server.services.taskassigning.core.model.Task;
 import org.kie.server.services.taskassigning.core.model.TaskAssigningSolution;
 import org.kie.server.services.taskassigning.core.model.User;
-import org.optaplanner.core.impl.score.director.ScoreDirector;
+import org.optaplanner.core.api.score.director.ScoreDirector;
 
 import static org.kie.server.services.taskassigning.core.model.Task.PREVIOUS_TASK_OR_USER;
 import static org.kie.server.services.taskassigning.core.model.solver.TaskHelper.extractTasks;

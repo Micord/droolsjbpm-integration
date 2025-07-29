@@ -18,12 +18,12 @@ package org.kie.server.services.taskassigning.runtime.persistence;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.Version;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.Version;
 
 @Entity
 @Table(name = "PlanningTask")
@@ -39,7 +39,7 @@ public class PlanningTaskImpl {
     @Column(name = "taskIndex")
     private int index;
     private short published = 0;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(jakarta.persistence.TemporalType.TIMESTAMP)
     private java.util.Date lastModificationDate;
 
 

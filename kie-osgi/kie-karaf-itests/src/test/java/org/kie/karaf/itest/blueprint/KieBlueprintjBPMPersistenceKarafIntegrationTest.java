@@ -181,7 +181,7 @@ public class KieBlueprintjBPMPersistenceKarafIntegrationTest extends AbstractKar
                                                "org.kie.internal.runtime.manager.context," +
                                                "org.drools.persistence.info," +
                                                "javax.transaction," +
-                                               "javax.persistence")
+                                               "jakarta.persistence")
                 .set(Constants.BUNDLE_SYMBOLICNAME, "Test-Blueprint-Bundle")
                 .build()).start());
 

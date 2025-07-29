@@ -19,7 +19,7 @@ package org.kie.server.services.taskassigning.runtime.persistence;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.spi.PersistenceUnitInfo;
+import jakarta.persistence.spi.PersistenceUnitInfo;
 
 import org.junit.After;
 import org.junit.Before;

@@ -15,17 +15,22 @@
  */
 package org.kie.aries.blueprint.mocks;
 
-import javax.persistence.Cache;
-import javax.persistence.EntityGraph;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnitUtil;
-import javax.persistence.Query;
-import javax.persistence.SynchronizationType;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.metamodel.Metamodel;
+import jakarta.persistence.Cache;
+import jakarta.persistence.EntityGraph;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceUnitTransactionType;
+import jakarta.persistence.PersistenceUnitUtil;
+import jakarta.persistence.Query;
+import jakarta.persistence.SchemaManager;
+import jakarta.persistence.SynchronizationType;
+import jakarta.persistence.TypedQueryReference;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.metamodel.Metamodel;
 import javax.sql.DataSource;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class MockEntityManager implements EntityManagerFactory {
 
@@ -85,7 +90,12 @@ public class MockEntityManager implements EntityManagerFactory {
 
     @Override
     public void close() {
-      
+
+    }
+
+    @Override
+    public String getName() {
+        return null;
     }
 
     @Override
@@ -104,6 +114,16 @@ public class MockEntityManager implements EntityManagerFactory {
     }
 
     @Override
+    public PersistenceUnitTransactionType getTransactionType() {
+        return null;
+    }
+
+    @Override
+    public SchemaManager getSchemaManager() {
+        return null;
+    }
+
+    @Override
     public void addNamedQuery(String s, Query query) {
 
     }
@@ -116,5 +136,25 @@ public class MockEntityManager implements EntityManagerFactory {
     @Override
     public <T> void addNamedEntityGraph(String s, EntityGraph<T> entityGraph) {
 
+    }
+
+    @Override
+    public <R> Map<String, TypedQueryReference<R>> getNamedQueries(Class<R> aClass) {
+        return null;
+    }
+
+    @Override
+    public <E> Map<String, EntityGraph<? extends E>> getNamedEntityGraphs(Class<E> aClass) {
+        return null;
+    }
+
+    @Override
+    public void runInTransaction(Consumer<EntityManager> consumer) {
+
+    }
+
+    @Override
+    public <R> R callInTransaction(Function<EntityManager, R> function) {
+        return null;
     }
 }

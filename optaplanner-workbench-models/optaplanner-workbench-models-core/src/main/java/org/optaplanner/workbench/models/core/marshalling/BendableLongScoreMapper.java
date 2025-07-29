@@ -30,7 +30,7 @@ public class BendableLongScoreMapper extends MappingDefinition {
         super(BendableLongScore.class);
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod(new JavaReflectionMethod(BendableLongScore.class.getMethod("valueOfUninitialized",
+        factoryMapping.setMethod(new JavaReflectionMethod(BendableLongScore.class.getMethod("ofUninitialized",
                                                                                             int.class,
                                                                                             long[].class,
                                                                                             long[].class)));

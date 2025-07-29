@@ -30,7 +30,7 @@ public class SimpleScoreMapper extends MappingDefinition {
         super(SimpleScore.class);
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod(new JavaReflectionMethod(SimpleScore.class.getMethod("valueOfUninitialized",
+        factoryMapping.setMethod(new JavaReflectionMethod(SimpleScore.class.getMethod("ofUninitialized",
                                                                                       int.class,
                                                                                       int.class)));
         factoryMapping.mapParmToIndex("initScore",

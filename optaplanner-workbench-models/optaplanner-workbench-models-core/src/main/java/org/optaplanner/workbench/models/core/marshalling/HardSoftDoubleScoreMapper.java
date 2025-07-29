@@ -16,24 +16,26 @@
 
 package org.optaplanner.workbench.models.core.marshalling;
 
+import java.math.BigDecimal;
+
 import org.jboss.errai.codegen.meta.impl.java.JavaReflectionMethod;
 import org.jboss.errai.marshalling.rebind.api.CustomMapping;
 import org.jboss.errai.marshalling.rebind.api.model.MappingDefinition;
 import org.jboss.errai.marshalling.rebind.api.model.impl.ReadMapping;
 import org.jboss.errai.marshalling.rebind.api.model.impl.SimpleFactoryMapping;
-import org.optaplanner.core.api.score.buildin.hardsoftdouble.HardSoftDoubleScore;
+import org.optaplanner.core.api.score.buildin.hardsoftbigdecimal.HardSoftBigDecimalScore;
 
-@CustomMapping(HardSoftDoubleScore.class)
+@CustomMapping(HardSoftBigDecimalScore.class)
 public class HardSoftDoubleScoreMapper extends MappingDefinition {
 
     public HardSoftDoubleScoreMapper() throws NoSuchMethodException {
-        super(HardSoftDoubleScore.class);
+        super(HardSoftBigDecimalScore.class);
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod(new JavaReflectionMethod(HardSoftDoubleScore.class.getMethod("valueOfUninitialized",
+        factoryMapping.setMethod(new JavaReflectionMethod(HardSoftBigDecimalScore.class.getMethod("ofUninitialized",
                                                                                               int.class,
-                                                                                              double.class,
-                                                                                              double.class)));
+                                                                                              BigDecimal.class,
+                                                                                              BigDecimal.class)));
         factoryMapping.mapParmToIndex("initScore",
                                       0,
                                       int.class);

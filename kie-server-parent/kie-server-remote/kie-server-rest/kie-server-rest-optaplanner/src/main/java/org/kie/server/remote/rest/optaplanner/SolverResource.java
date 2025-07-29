@@ -32,18 +32,18 @@ import static org.kie.server.remote.rest.common.util.RestUtils.internalServerErr
 
 import java.text.MessageFormat;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Variant;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Variant;
 
 import org.kie.server.api.model.ServiceResponse;
 import org.kie.server.api.model.instance.SolverInstance;
@@ -89,7 +89,7 @@ public class SolverResource {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response createSolver(
-            @javax.ws.rs.core.Context HttpHeaders headers,
+            @jakarta.ws.rs.core.Context HttpHeaders headers,
             @ApiParam(value = "container id where the solver config resides", required = true) @PathParam(CONTAINER_ID) String containerId,
             @ApiParam(value = "identifier of the solver to create", required = true) @PathParam(SOLVER_ID) String solverId,
             @ApiParam(value = "solver instance details as SolverInstance type", required = true) String payload) {
@@ -151,7 +151,7 @@ public class SolverResource {
             @ApiResponse(code = 404, message = "Container does not exist or failure in creating solver") })
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response getSolvers(@javax.ws.rs.core.Context HttpHeaders headers,
+    public Response getSolvers(@jakarta.ws.rs.core.Context HttpHeaders headers,
             @ApiParam(value = "container id where the solvers reside", required = true) @PathParam(CONTAINER_ID) String containerId) {
         Variant v = getVariant(headers);
         Header conversationIdHeader = buildConversationIdHeader(containerId,
@@ -191,7 +191,7 @@ public class SolverResource {
     @GET
     @Path(RestURI.SOLVER_ID_URI)
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response getSolver(@javax.ws.rs.core.Context HttpHeaders headers,
+    public Response getSolver(@jakarta.ws.rs.core.Context HttpHeaders headers,
             @ApiParam(value = "container id where the solver resides", required = true) @PathParam(CONTAINER_ID) String containerId,
             @ApiParam(value = "identifier of the solver", required = true) @PathParam(SOLVER_ID) String solverId) {
         Variant v = getVariant(headers);
@@ -233,7 +233,7 @@ public class SolverResource {
     @GET
     @Path(SOLVER_ID_URI + "/" + SOLVER_BEST_SOLUTION)
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response getSolverWithBestSolution(@javax.ws.rs.core.Context HttpHeaders headers,
+    public Response getSolverWithBestSolution(@jakarta.ws.rs.core.Context HttpHeaders headers,
             @ApiParam(value = "container id where the solver resides", required = true) @PathParam(CONTAINER_ID) String containerId,
             @ApiParam(value = "identifier of the solver", required = true) @PathParam(SOLVER_ID) String solverId) {
         Variant v = getVariant(headers);
@@ -275,7 +275,7 @@ public class SolverResource {
     @POST
     @Path(RestURI.SOLVER_ID_URI + "/" + SOLVER_STATE_RUNNING)
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response solvePlanningProblem(@javax.ws.rs.core.Context HttpHeaders headers,
+    public Response solvePlanningProblem(@jakarta.ws.rs.core.Context HttpHeaders headers,
             @ApiParam(value = "container id where the solver resides", required = true) @PathParam(CONTAINER_ID) String containerId,
             @ApiParam(value = "identifier of the solver", required = true) @PathParam(SOLVER_ID) String solverId,
             @ApiParam(value = "planning problem", required = true) String payload) {
@@ -324,7 +324,7 @@ public class SolverResource {
     @POST
     @Path(RestURI.SOLVER_ID_URI + "/" + SOLVER_STATE_TERMINATING)
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response terminateSolverEarly(@javax.ws.rs.core.Context HttpHeaders headers,
+    public Response terminateSolverEarly(@jakarta.ws.rs.core.Context HttpHeaders headers,
             @ApiParam(value = "container id where the solver resides", required = true) @PathParam(CONTAINER_ID) String containerId,
             @ApiParam(value = "identifier of the solver", required = true) @PathParam(SOLVER_ID) String solverId) {
         Variant v = getVariant(headers);
@@ -364,7 +364,7 @@ public class SolverResource {
     @POST
     @Path(RestURI.SOLVER_ID_URI + "/" + SOLVER_PROBLEM_FACT_CHANGES)
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response addProblemFactChanges(@javax.ws.rs.core.Context HttpHeaders headers,
+    public Response addProblemFactChanges(@jakarta.ws.rs.core.Context HttpHeaders headers,
             @ApiParam(value = "container id where the solver resides", required = true) @PathParam(CONTAINER_ID) String containerId,
             @ApiParam(value = "identifier of the solver", required = true) @PathParam(SOLVER_ID) String solverId,
             @ApiParam(value = "Problem fact changes, either single one or a list of them", required = true) String payload) {
@@ -413,7 +413,7 @@ public class SolverResource {
     @GET
     @Path(RestURI.SOLVER_ID_URI + "/" + SOLVER_PROBLEM_FACTS_CHANGES_PROCESSED)
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response isEveryProblemFactChangeProcessed(@javax.ws.rs.core.Context HttpHeaders headers,
+    public Response isEveryProblemFactChangeProcessed(@jakarta.ws.rs.core.Context HttpHeaders headers,
             @ApiParam(value = "container id where the solver resides", required = true) @PathParam(CONTAINER_ID) String containerId,
             @ApiParam(value = "identifier of the solver", required = true) @PathParam(SOLVER_ID) String solverId) {
         Variant v = getVariant(headers);
@@ -455,7 +455,7 @@ public class SolverResource {
     @DELETE
     @Path(RestURI.SOLVER_ID_URI)
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response disposeSolver(@javax.ws.rs.core.Context HttpHeaders headers,
+    public Response disposeSolver(@jakarta.ws.rs.core.Context HttpHeaders headers,
             @ApiParam(value = "container id where the solver resides", required = true) @PathParam(CONTAINER_ID) String containerId,
             @ApiParam(value = "identifier of the solver", required = true) @PathParam(SOLVER_ID) String solverId) {
         Variant v = getVariant(headers);

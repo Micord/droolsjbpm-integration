@@ -19,8 +19,8 @@ package org.kie.server.services.taskassigning.core.model.solver.realtime;
 import org.kie.server.services.taskassigning.core.TaskAssigningRuntimeException;
 import org.kie.server.services.taskassigning.core.model.Task;
 import org.kie.server.services.taskassigning.core.model.TaskAssigningSolution;
-import org.optaplanner.core.impl.score.director.ScoreDirector;
-import org.optaplanner.core.impl.solver.ProblemFactChange;
+import org.optaplanner.core.api.score.director.ScoreDirector;
+import org.optaplanner.core.api.solver.ProblemFactChange;
 
 /**
  * Adds a Task to the working solution. If a task with the given identifier already exists an exception is thrown.

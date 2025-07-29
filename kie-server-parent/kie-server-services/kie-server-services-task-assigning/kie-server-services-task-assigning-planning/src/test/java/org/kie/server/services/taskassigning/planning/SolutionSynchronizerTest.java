@@ -39,7 +39,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.optaplanner.core.impl.solver.ProblemFactChange;
+import org.optaplanner.core.api.solver.ProblemFactChange;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

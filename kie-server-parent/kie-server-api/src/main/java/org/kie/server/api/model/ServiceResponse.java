@@ -18,12 +18,12 @@ package org.kie.server.api.model;
 
 import java.util.ArrayList;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElements;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -203,7 +203,7 @@ public class ServiceResponse<T> implements KieServiceResponse<T> {
             @XmlElement(name = "document-instance", type = DocumentInstance.class),
             @XmlElement(name = "document-instance-list", type = DocumentInstanceList.class),
             @XmlElement(name =  "count-definition", type = CountDefinition.class),
-            
+
             // optaplanner entities
             @XmlElement(name = "solver-instance", type = SolverInstance.class),
             @XmlElement(name = "solver-instance-list", type = SolverInstanceList.class),

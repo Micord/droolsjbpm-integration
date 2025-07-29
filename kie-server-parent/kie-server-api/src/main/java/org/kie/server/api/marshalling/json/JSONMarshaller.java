@@ -38,10 +38,11 @@ import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
+import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationIntrospector;
+import jakarta.xml.bind.annotation.XmlAnyElement;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -79,7 +80,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.ClassUtil;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import org.drools.core.xml.jaxb.util.JaxbListAdapter;
 import org.drools.core.xml.jaxb.util.JaxbListWrapper;
 import org.drools.core.xml.jaxb.util.JaxbUnknownAdapter;
@@ -129,7 +129,7 @@ public class JSONMarshaller implements Marshaller {
         private boolean stripped;
 
         private boolean wrap;
-        
+
         private boolean writeNull;
 
         public JSONContext() {
@@ -182,7 +182,7 @@ public class JSONMarshaller implements Marshaller {
     // Optional Marshaller Extension to handle new types
     private static final List<JSONMarshallerExtension> EXTENSIONS;
 
-    
+
 
     // Load Marshaller Extension
     static {
@@ -490,7 +490,7 @@ public class JSONMarshaller implements Marshaller {
         return data;
     }
 
-    class ExtendedJaxbAnnotationIntrospector extends JaxbAnnotationIntrospector {
+    class ExtendedJaxbAnnotationIntrospector extends JakartaXmlBindAnnotationIntrospector {
 
         private List<NamedType> customClasses;
         private ObjectMapper customObjectMapper;
@@ -837,13 +837,13 @@ public class JSONMarshaller implements Marshaller {
             return builder.toString();
         }
     }
-    
+
     private ObjectMapper getMapper(ObjectMapper alwaysMapper, ObjectMapper notNullMapper)
     {
         return jsonContext.get().isWriteNull() ? alwaysMapper : notNullMapper;
     }
 
-    
+
 
     class CustomObjectDeserializer extends UntypedObjectDeserializer {
 

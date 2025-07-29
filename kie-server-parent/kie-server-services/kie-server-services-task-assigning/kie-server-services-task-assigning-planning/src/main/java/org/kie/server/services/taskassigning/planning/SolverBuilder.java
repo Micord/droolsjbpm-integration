@@ -105,8 +105,7 @@ public class SolverBuilder {
             throw new SolverBuilderException("Container " + solverDef.getContainerId() + " must be in " + KieContainerStatus.STARTED +
                                                      " status for creating solvers, but current status is: " + containerInstance.getStatus());
         }
-        final SolverFactory<TaskAssigningSolution> solverFactory = SolverFactory.createFromKieContainerXmlResource(containerInstance.getKieContainer(),
-                                                                                                                   solverDef.getSolverConfigResource());
+        final SolverFactory<TaskAssigningSolution> solverFactory = SolverFactory.createFromXmlResource(            solverDef.getSolverConfigResource());
         return solverFactory.buildSolver();
     }
 }

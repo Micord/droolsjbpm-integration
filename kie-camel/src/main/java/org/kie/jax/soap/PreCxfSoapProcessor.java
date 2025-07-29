@@ -16,7 +16,7 @@
 
 package org.kie.jax.soap;
 
-import javax.xml.soap.SOAPMessage;
+import jakarta.xml.soap.SOAPMessage;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;

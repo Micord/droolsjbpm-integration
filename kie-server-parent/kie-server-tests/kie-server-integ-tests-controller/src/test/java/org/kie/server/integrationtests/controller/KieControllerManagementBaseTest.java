@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -20,10 +20,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.ws.rs.core.Configuration;
+import jakarta.ws.rs.core.Configuration;
 
 import org.assertj.core.api.SoftAssertions;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.kie.server.api.model.KieContainerStatus;
@@ -51,10 +52,10 @@ public abstract class KieControllerManagementBaseTest extends RestOnlyBaseIntegr
     @Before
     public void createControllerClient() {
         final Configuration configuration =
-                new ResteasyClientBuilder()
-                        .establishConnectionTimeout(10,
+                new ResteasyClientBuilderImpl()
+                        .connectTimeout(10,
                                                     TimeUnit.SECONDS)
-                        .socketTimeout(60,
+                        .connectTimeout(60,
                                        TimeUnit.SECONDS)
                         .getConfiguration();
         if (TestConfig.isLocalServer()) {

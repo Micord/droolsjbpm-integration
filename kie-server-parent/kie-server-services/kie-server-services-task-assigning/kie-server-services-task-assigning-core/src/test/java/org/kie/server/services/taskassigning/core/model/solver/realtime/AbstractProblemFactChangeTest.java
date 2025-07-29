@@ -26,8 +26,8 @@ import java.util.function.Function;
 
 import org.kie.server.services.taskassigning.core.AbstractTaskAssigningCoreTest;
 import org.kie.server.services.taskassigning.core.model.TaskAssigningSolution;
+import org.optaplanner.core.api.solver.ProblemFactChange;
 import org.optaplanner.core.api.solver.Solver;
-import org.optaplanner.core.impl.solver.ProblemFactChange;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

@@ -26,7 +26,7 @@ import org.kie.server.common.rest.KieServerHttpResponse;
 import org.kie.server.springboot.samples.KieServerApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -38,16 +38,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class KieServerWithExtraEndpointTest {
 
     @LocalServerPort
-    private int port;    
-   
+    private int port;
+
     private static final String JOHN = "john";
     private static final String PASSWORD = "usetheforce123@";
 
     @Test
     public void testExtraEndpoint() {
-        
+
         String extraEndpoint = "http://localhost:" + port + "/rest/extra";
-        
+
         KieServerHttpRequest httpRequest =
                 KieServerHttpRequest.newRequest(extraEndpoint, JOHN, PASSWORD)
                 .followRedirects(true)
@@ -55,10 +55,10 @@ public class KieServerWithExtraEndpointTest {
                 .contentType("application/json")
                 .accept("application/json");
         httpRequest.get();
-        
+
         KieServerHttpResponse response = httpRequest.response();
         int responseCode = response.code();
-        assertEquals(200, responseCode);               
+        assertEquals(200, responseCode);
     }
 
 }
