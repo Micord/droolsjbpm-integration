@@ -77,6 +77,7 @@
     <version.net.byte-buddy>1.17.6</version.net.byte-buddy>
     <version.org.mvel>2.5.2.Final</version.org.mvel>
     <version.org.apache.commons.dbcp2>2.13.0</version.org.apache.commons.dbcp2>
+    <version.io.takari.maven.plugins.compiler>2.3.2</version.io.takari.maven.plugins.compiler>
     <nexus.url>https://repo.micord.ru</nexus.url>
   </properties>
 
