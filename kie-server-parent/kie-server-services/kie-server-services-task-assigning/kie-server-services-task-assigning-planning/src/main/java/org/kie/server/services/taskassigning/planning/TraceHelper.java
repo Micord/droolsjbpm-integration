@@ -33,7 +33,7 @@ import org.kie.server.services.taskassigning.core.model.solver.realtime.RemoveUs
 import org.kie.server.services.taskassigning.core.model.solver.realtime.TaskPropertyChangeProblemFactChange;
 import org.kie.server.services.taskassigning.core.model.solver.realtime.UserPropertyChangeProblemFactChange;
 import org.kie.server.services.taskassigning.planning.util.IndexedElement;
-import org.optaplanner.core.impl.solver.ProblemFactChange;
+import org.optaplanner.core.api.solver.ProblemFactChange;
 import org.slf4j.Logger;
 
 public class TraceHelper {

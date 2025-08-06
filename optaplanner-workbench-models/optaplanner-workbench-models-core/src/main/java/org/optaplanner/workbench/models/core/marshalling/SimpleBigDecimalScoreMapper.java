@@ -32,7 +32,7 @@ public class SimpleBigDecimalScoreMapper extends MappingDefinition {
         super(SimpleBigDecimalScore.class);
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod(new JavaReflectionMethod(SimpleBigDecimalScore.class.getMethod("valueOfUninitialized",
+        factoryMapping.setMethod(new JavaReflectionMethod(SimpleBigDecimalScore.class.getMethod("ofUninitialized",
                                                                                                 int.class,
                                                                                                 BigDecimal.class)));
         factoryMapping.mapParmToIndex("initScore",

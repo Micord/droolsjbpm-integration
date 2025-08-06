@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.kie</groupId>
     <artifactId>kie-spring-boot-autoconfiguration</artifactId>
-    <version>7.74.1.Final</version>
+    <version>7.74.1.Final-Micord.1</version>
   </parent>
   <artifactId>kie-server-spring-boot-autoconfiguration</artifactId>
   <name>KIE :: Spring :: Boot :: KIE Server Auto Configuration</name>
@@ -136,7 +136,7 @@
           <groupId>org.jboss.resteasy</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>resteasy-jaxrs</artifactId>
+          <artifactId>resteasy-core-spi</artifactId>
           <groupId>org.jboss.resteasy</groupId>
         </exclusion>
         <exclusion>
@@ -153,7 +153,7 @@
         </exclusion>
         <exclusion>
           <groupId>org.jboss.resteasy</groupId>
-          <artifactId>resteasy-jackson-provider</artifactId>
+          <artifactId>resteasy-jackson2-provider</artifactId>
         </exclusion>
         <exclusion>
           <groupId>jakarta.el</groupId>

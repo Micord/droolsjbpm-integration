@@ -60,7 +60,7 @@ public class ScoresMarshallingTest {
 
     @Test
     public void testMarshallHardSoftScore() {
-        HardSoftScore score = HardSoftScore.valueOf(10, 20);
+        HardSoftScore score = HardSoftScore.of(10, 20);
         HardSoftScore result = marshallUnmarshallScore(score);
 
         assertNotNull(result);

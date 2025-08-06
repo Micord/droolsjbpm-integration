@@ -15,7 +15,7 @@
 
 package org.kie.server.controller.websocket;
 
-import javax.websocket.Session;
+import jakarta.websocket.Session;
 
 import org.kie.server.api.model.KieServerInfo;
 import org.kie.server.controller.api.model.KieServerSetup;
@@ -32,16 +32,16 @@ import org.slf4j.LoggerFactory;
 
 
 public class ConnectedKieServerHandler implements InternalMessageHandler {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(ConnectedKieServerHandler.class);
 
     private WebSocketSessionManager manager;
     private Session session;
     private KieServerControllerImpl controller;
-    private String serverId;    
-    
+    private String serverId;
+
     private KieServerInfo serverInfo;
-    
+
     public ConnectedKieServerHandler(WebSocketSessionManager manager, Session session, KieServerControllerImpl controller, String serverId) {
         super();
         this.manager = manager;
@@ -69,9 +69,9 @@ public class ConnectedKieServerHandler implements InternalMessageHandler {
 
     @Override
     public void afterResponseSent() {
-        
+
         ServerTemplate serverTemplate = controller.getTemplateStorage().load(serverInfo.getServerId());
-        
+
         ServerInstanceKey serverInstanceKey = serverTemplate.getServerInstanceKeys().stream()
                 .filter(server -> server.getUrl().equals(serverInfo.getLocation()))
                 .findFirst()
@@ -81,7 +81,7 @@ public class ConnectedKieServerHandler implements InternalMessageHandler {
         serverInstance.setServerTemplateId(serverInstanceKey.getServerTemplateId());
         serverInstance.setServerInstanceId(serverInstanceKey.getServerInstanceId());
         serverInstance.setUrl(serverInstanceKey.getUrl());
-        
+
         controller.getNotificationService().notify(new ServerInstanceUpdated(serverInstance));
         controller.getNotificationService().notify(new ServerInstanceConnected(serverInstance));
     }

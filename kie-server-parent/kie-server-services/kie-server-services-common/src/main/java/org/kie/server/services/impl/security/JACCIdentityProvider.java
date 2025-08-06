@@ -16,7 +16,7 @@
 package org.kie.server.services.impl.security;
 
 import java.security.Principal;
-import java.security.acl.Group;
+//import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -69,17 +69,17 @@ public class JACCIdentityProvider
             if (principals != null) {
 
                 roles = new ArrayList<String>();
-                for (Principal principal : principals) {
-                    if (principal instanceof Group) {
-                        Enumeration<? extends Principal> groups = ((Group) principal).members();
-
-                        while (groups.hasMoreElements()) {
-                            Principal groupPrincipal = groups.nextElement();
-                            roles.add(groupPrincipal.getName());
-                        }
-                        break;
-                    }
-                }
+//                for (Principal principal : principals) {
+//                    if (principal instanceof Group) {
+//                        Enumeration<? extends Principal> groups = ((Group) principal).members();
+//
+//                        while (groups.hasMoreElements()) {
+//                            Principal groupPrincipal = groups.nextElement();
+//                            roles.add(groupPrincipal.getName());
+//                        }
+//                        break;
+//                    }
+//                }
             }
         }
 
@@ -94,18 +94,18 @@ public class JACCIdentityProvider
         if (subject != null) {
             Set<Principal> principals = subject.getPrincipals();
             if (principals != null) {
-                for (Principal principal : principals) {
-                    if (principal instanceof Group) {
-                        Enumeration<? extends Principal> groups = ((Group) principal).members();
-                        while (groups.hasMoreElements()) {
-                            Principal groupPrincipal = groups.nextElement();
-                            if (groupPrincipal.getName().equals(s)) {
-                                return true;
-                            }
-                        }
-                        break;
-                    }
-                }
+//                for (Principal principal : principals) {
+//                    if (principal instanceof Group) {
+//                        Enumeration<? extends Principal> groups = ((Group) principal).members();
+//                        while (groups.hasMoreElements()) {
+//                            Principal groupPrincipal = groups.nextElement();
+//                            if (groupPrincipal.getName().equals(s)) {
+//                                return true;
+//                            }
+//                        }
+//                        break;
+//                    }
+//                }
             }
         }
         for (SecurityAdapter adapter : adapters) {
@@ -127,7 +127,7 @@ public class JACCIdentityProvider
     }
 
     protected boolean supportedPrincipal(Principal principal) {
-        if (!(principal instanceof Group) && !principal.getClass().getName().endsWith("BasicAuthorizationPrincipal")) {
+        if (!principal.getClass().getName().endsWith("BasicAuthorizationPrincipal")) {
             return true;
         }
 

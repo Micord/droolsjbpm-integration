@@ -16,16 +16,16 @@
 
 package org.kie.server.api.model.instance;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlValue;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlValue;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 import com.thoughtworks.xstream.converters.extended.ToAttributedValueConverter;
 import org.optaplanner.core.api.score.Score;
-import org.optaplanner.core.impl.score.ScoreUtils;
+import org.optaplanner.core.api.score.buildin.simple.SimpleScore;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XStreamConverter(value = ToAttributedValueConverter.class, strings = {"scoreString"})
@@ -65,8 +65,7 @@ public class ScoreWrapper {
         if (scoreClass == null) {
             return null;
         }
-
-        return ScoreUtils.parseScore(scoreClass, scoreString);
+        return SimpleScore.parseScore(scoreString);
     }
 
     @Override

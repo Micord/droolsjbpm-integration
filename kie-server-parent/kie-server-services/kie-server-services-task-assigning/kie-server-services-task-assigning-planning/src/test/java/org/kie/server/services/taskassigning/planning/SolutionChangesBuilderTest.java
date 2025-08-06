@@ -52,8 +52,8 @@ import org.kie.server.services.taskassigning.core.model.solver.realtime.UserProp
 import org.kie.server.services.taskassigning.user.system.api.UserSystemService;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.optaplanner.core.impl.score.director.ScoreDirector;
-import org.optaplanner.core.impl.solver.ProblemFactChange;
+import org.optaplanner.core.api.score.director.ScoreDirector;
+import org.optaplanner.core.api.solver.ProblemFactChange;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

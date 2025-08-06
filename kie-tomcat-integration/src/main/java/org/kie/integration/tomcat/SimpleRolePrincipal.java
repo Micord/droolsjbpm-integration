@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -16,13 +16,12 @@
 package org.kie.integration.tomcat;
 
 import java.security.Principal;
-import java.security.acl.Group;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SimpleRolePrincipal extends SimplePrincipal implements Group {
+public class SimpleRolePrincipal extends SimplePrincipal {
 
     private Set<Principal> principals = new HashSet<Principal>();
 
@@ -34,22 +33,18 @@ public class SimpleRolePrincipal extends SimplePrincipal implements Group {
     }
 
 
-    @Override
     public boolean addMember(Principal principal) {
         return principals.add(principal);
     }
 
-    @Override
     public boolean removeMember(Principal principal) {
         return principals.remove(principal);
     }
 
-    @Override
     public boolean isMember(Principal principal) {
         return principals.contains(principal);
     }
 
-    @Override
     public Enumeration<? extends Principal> members() {
         return Collections.enumeration(principals);
     }

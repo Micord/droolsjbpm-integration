@@ -1,15 +1,15 @@
 
 package com.jboss.soap.service.acmedemo;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for listAvailablePlanes complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="listAvailablePlanes">
  *   &lt;complexContent>
@@ -21,8 +21,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "listAvailablePlanes", propOrder = {
@@ -34,11 +34,11 @@ public class ListAvailablePlanes {
 
     /**
      * Gets the value of the in property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link FlightRequest }
-     *     
+     *
      */
     public FlightRequest getIn() {
         return in;
@@ -46,11 +46,11 @@ public class ListAvailablePlanes {
 
     /**
      * Sets the value of the in property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link FlightRequest }
-     *     
+     *
      */
     public void setIn(FlightRequest value) {
         this.in = value;

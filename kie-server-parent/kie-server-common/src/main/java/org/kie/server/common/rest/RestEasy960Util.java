@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -21,15 +21,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Variant;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Variant;
 
 import org.kie.server.common.rest.variant.ServerDrivenNegotiation;
 
 /**
- * This utility compensates for RESTEASY-960: 
+ * This utility compensates for RESTEASY-960:
  * https://issues.jboss.org/browse/RESTEASY-960
  */
 public class RestEasy960Util {
@@ -38,29 +38,29 @@ public class RestEasy960Util {
     private static final String ACCEPT_CHARSET = "Accept-Charset";
     private static final String ACCEPT_ENCODING = "Accept-Encoding";
     private static final String ACCEPT_LANGUAGE = "Accept-Language";
-   
-    public static List<Variant> variants 
+
+    public static List<Variant> variants
             = Variant.mediaTypes(MediaType.APPLICATION_XML_TYPE,
                                  new MediaType("application", "json", Collections.singletonMap("strict", "true")),
                                  new MediaType("application", "json", Collections.singletonMap("fields", "not_null")),
                                  new MediaType("application", "json", mapOf("strict", "true", "fields", "not_null")),
                                  MediaType.APPLICATION_JSON_TYPE)
                      .add().build();
-    public static Variant defaultVariant 
+    public static Variant defaultVariant
         = Variant.mediaTypes(MediaType.APPLICATION_XML_TYPE).add().build().get(0);
-    public static final Variant jsonVariant 
+    public static final Variant jsonVariant
         = Variant.mediaTypes(MediaType.APPLICATION_JSON_TYPE).add().build().get(0);
-    
-    public static Variant getVariant(HttpHeaders headers) { 
+
+    public static Variant getVariant(HttpHeaders headers) {
         // copied (except for the acceptHeaders fix) from RestEasy's RequestImpl class
         ServerDrivenNegotiation negotiation = new ServerDrivenNegotiation();
         MultivaluedMap<String, String> requestHeaders = headers.getRequestHeaders();
         List<String> acceptHeaders = requestHeaders.get(ACCEPT);
         // Fix
-        if( acceptHeaders != null && ! acceptHeaders.isEmpty() ) { 
+        if( acceptHeaders != null && ! acceptHeaders.isEmpty() ) {
             List<String> fixedAcceptHeaders = new ArrayList<String>();
-            for(String header : acceptHeaders ) { 
-                fixedAcceptHeaders.add(header.replaceAll("q=\\.", "q=0.")); 
+            for(String header : acceptHeaders ) {
+                fixedAcceptHeaders.add(header.replaceAll("q=\\.", "q=0."));
             }
             acceptHeaders = fixedAcceptHeaders;
             negotiation.setAcceptHeaders(acceptHeaders);

@@ -3,7 +3,7 @@ package com.jboss.soap.service.acmedemo.impl;
 import java.math.BigDecimal;
 import java.util.Random;
 
-import javax.jws.WebService;
+import jakarta.jws.WebService;
 
 import org.apache.cxf.phase.PhaseInterceptorChain;
 
@@ -23,13 +23,13 @@ public class AcmeDemoInterfaceImpl implements AcmeDemoInterface {
         Flight outbound = new Flight();
         outbound.setCompany("EasyJet");
         outbound.setPlaneId(12345);
-        
+
         if (PhaseInterceptorChain.getCurrentMessage()!= null &&
             PhaseInterceptorChain.getCurrentMessage().getExchange() != null &&
             PhaseInterceptorChain.getCurrentMessage().getExchange().get("discount") != null &&
             (boolean) PhaseInterceptorChain.getCurrentMessage().getExchange().get("discount"))
             outbound.setRatePerPerson(new BigDecimal(100));
-        else 
+        else
             outbound.setRatePerPerson(outboundBD);
         outbound.setStartCity(startCity);
         outbound.setTargetCity(endCity);

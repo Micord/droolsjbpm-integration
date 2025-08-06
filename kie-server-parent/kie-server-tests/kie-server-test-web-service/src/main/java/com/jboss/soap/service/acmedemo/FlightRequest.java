@@ -3,16 +3,16 @@ package com.jboss.soap.service.acmedemo;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for flightRequest complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="flightRequest">
  *   &lt;complexContent>
@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "flightRequest", propOrder = {
@@ -50,11 +50,11 @@ public class FlightRequest implements Serializable {
 
     /**
      * Gets the value of the startCity property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getStartCity() {
         return startCity;
@@ -62,11 +62,11 @@ public class FlightRequest implements Serializable {
 
     /**
      * Sets the value of the startCity property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setStartCity(String value) {
         this.startCity = value;
@@ -74,11 +74,11 @@ public class FlightRequest implements Serializable {
 
     /**
      * Gets the value of the endCity property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getEndCity() {
         return endCity;
@@ -86,11 +86,11 @@ public class FlightRequest implements Serializable {
 
     /**
      * Sets the value of the endCity property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setEndCity(String value) {
         this.endCity = value;
@@ -98,11 +98,11 @@ public class FlightRequest implements Serializable {
 
     /**
      * Gets the value of the startDate property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getStartDate() {
         return startDate;
@@ -110,11 +110,11 @@ public class FlightRequest implements Serializable {
 
     /**
      * Sets the value of the startDate property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setStartDate(String value) {
         this.startDate = value;
@@ -122,11 +122,11 @@ public class FlightRequest implements Serializable {
 
     /**
      * Gets the value of the endDate property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getEndDate() {
         return endDate;
@@ -134,11 +134,11 @@ public class FlightRequest implements Serializable {
 
     /**
      * Sets the value of the endDate property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setEndDate(String value) {
         this.endDate = value;

@@ -38,11 +38,11 @@ import org.kie.server.services.impl.KieContainerInstanceImpl;
 import org.kie.server.services.prometheus.PrometheusKieServerExtension;
 import org.kie.server.services.prometheus.PrometheusMetricsSolverListener;
 import org.optaplanner.core.api.score.Score;
+import org.optaplanner.core.api.solver.ProblemFactChange;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
 import org.optaplanner.core.config.solver.SolverConfig;
 import org.optaplanner.core.impl.solver.AbstractSolver;
-import org.optaplanner.core.impl.solver.ProblemFactChange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -138,15 +138,16 @@ public class SolverServiceBase {
 
     private Solver<Object> buildSolver(KieContainer container, String solverConfigResource) {
         SolverConfig solverConfig = SolverConfig.createFromXmlResource(solverConfigResource, container.getClassLoader());
-        if (solverConfig.getScanAnnotatedClassesConfig() != null && !scanExcludedPackages.isEmpty()) {
-            List<String> scanExcludedPackagesToSet = new ArrayList<>();
-            if (solverConfig.getScanAnnotatedClassesConfig().getPackageExcludeList() != null) {
-                scanExcludedPackagesToSet.addAll(solverConfig.getScanAnnotatedClassesConfig().getPackageExcludeList());
-            }
-            scanExcludedPackagesToSet.addAll(scanExcludedPackages);
-            solverConfig.getScanAnnotatedClassesConfig().setPackageExcludeList(scanExcludedPackagesToSet);
-        }
-        SolverFactory<Object> solverFactory = SolverFactory.createFromKieContainer(container, solverConfig);
+//        solverConfig.withScoreDirectorFactory()
+//        if (solverConfig.getScanAnnotatedClassesConfig() != null && !scanExcludedPackages.isEmpty()) {
+//            List<String> scanExcludedPackagesToSet = new ArrayList<>();
+//            if (solverConfig.getScanAnnotatedClassesConfig().getPackageExcludeList() != null) {
+//                scanExcludedPackagesToSet.addAll(solverConfig.getScanAnnotatedClassesConfig().getPackageExcludeList());
+//            }
+//            scanExcludedPackagesToSet.addAll(scanExcludedPackages);
+//            solverConfig.getScanAnnotatedClassesConfig().setPackageExcludeList(scanExcludedPackagesToSet);
+//        }
+        SolverFactory<Object> solverFactory = SolverFactory.create(solverConfig);
         return newSolver(solverFactory);
     }
 
@@ -205,7 +206,7 @@ public class SolverServiceBase {
                                                                                         solverId));
             if (sic != null) {
                 updateSolverInstance(sic);
-                sic.getInstance().setBestSolution(sic.getSolver().getBestSolution());
+                sic.getInstance().setBestSolution(sic.getInstance().getBestSolution());
                 return new ServiceResponse<>(ServiceResponse.ResponseType.SUCCESS,
                                              "Best computed solution for '" + solverId + "' successfully retrieved from container '" + containerId + "'",
                                              sic.getInstance());
@@ -332,7 +333,7 @@ public class SolverServiceBase {
                             .map(e -> "[index " + e.getKey() + ", type: " + e.getValue().getClass() + "]")
                             .collect(Collectors.joining(","));
                     return new ServiceResponse<>(ServiceResponse.ResponseType.FAILURE,
-                                                 "Items (" + errorItemsString + ") of supplied 'problemFactChangeObject' parameter are not instances of " + ProblemFactChange.class.getName() + ".");
+                        "Items (" + errorItemsString + ") of supplied 'problemFactChangeObject' parameter are not instances of " + ProblemFactChange.class.getName() + ".");
                 }
                 return submitProblemFactChanges(sic,
                                                 containerId,
@@ -493,7 +494,7 @@ public class SolverServiceBase {
     private void updateSolverInstance(SolverInstanceContext sic) {
         synchronized (sic) {
             // We keep track of the solver status ourselves, so there's no need to call buggy updateSolverStatus( sic );
-            Score<?> bestScore = sic.getSolver().getBestScore();
+            Score<?> bestScore = (Score<?>) sic.getInstance().getBestSolution();
 
             sic.getInstance().setScoreWrapper(new ScoreWrapper(bestScore));
         }

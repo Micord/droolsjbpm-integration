@@ -26,13 +26,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
-import org.jboss.resteasy.client.jaxrs.BasicAuthentication;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.internal.BasicAuthentication;
+import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -52,13 +53,13 @@ import org.kie.server.integrationtests.shared.KieServerDeployer;
 import org.kie.server.integrationtests.shared.basetests.KieServerBaseIntegrationTest;
 
 public class RenderFormServiceRestOnlyIntegrationTest extends KieServerBaseIntegrationTest {
-    
+
     @ClassRule
     public static ExternalResource StaticResource = new DBExternalResource();
 
     private static ReleaseId releaseId = new ReleaseId("org.kie.server.testing", "definition-project",
             "1.0.0.Final");
-    
+
     private static Client httpClient;
 
     private static final String CONTAINER_ID = "definition-project";
@@ -81,7 +82,7 @@ public class RenderFormServiceRestOnlyIntegrationTest extends KieServerBaseInteg
             response.close();
         }
     }
-    
+
     @AfterClass
     public static void closeHttpClient() {
         if (httpClient != null) {
@@ -92,7 +93,7 @@ public class RenderFormServiceRestOnlyIntegrationTest extends KieServerBaseInteg
 
     @Test
     public void testGetProcessFormTest() throws Exception {
-        Map<String, Object> valuesMap = new HashMap<String, Object>();        
+        Map<String, Object> valuesMap = new HashMap<String, Object>();
         valuesMap.put(RestURI.CONTAINER_ID, CONTAINER_ID);
         valuesMap.put(RestURI.PROCESS_ID, HIRING_PROCESS_ID);
 
@@ -125,7 +126,7 @@ public class RenderFormServiceRestOnlyIntegrationTest extends KieServerBaseInteg
         assertNotNull(result);
         assertFalse(result.isEmpty());
     }
-    
+
     @Test
     public void testGetStaticFileFromProvider() throws Exception {
         Map<String, Object> valuesMap = new HashMap<String, Object>();
@@ -151,17 +152,17 @@ public class RenderFormServiceRestOnlyIntegrationTest extends KieServerBaseInteg
             restConfiguration = KieServicesFactory.newRestConfiguration(TestConfig.getKieServerHttpUrl(), null, null);
         }
         return createDefaultClient(restConfiguration, MarshallingFormat.JAXB);
-    }   
-    
+    }
+
     protected KieServicesConfiguration createKieServicesRestConfiguration() {
         return KieServicesFactory.newRestConfiguration(TestConfig.getKieServerHttpUrl(), TestConfig.getUsername(), TestConfig.getPassword());
     }
 
     protected WebTarget newRequest(String uriString) {
         if(httpClient == null) {
-            httpClient = new ResteasyClientBuilder()
-                    .establishConnectionTimeout(10, TimeUnit.SECONDS)
-                    .socketTimeout(10, TimeUnit.SECONDS)
+            httpClient = new ResteasyClientBuilderImpl()
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(10, TimeUnit.SECONDS)
                     .build();
         }
         WebTarget webTarget = httpClient.target(uriString);
@@ -169,5 +170,5 @@ public class RenderFormServiceRestOnlyIntegrationTest extends KieServerBaseInteg
         return webTarget;
     }
 
-  
+
 }

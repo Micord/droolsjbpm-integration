@@ -38,10 +38,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.naming.InitialContext;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.spi.PersistenceProvider;
-import javax.persistence.spi.PersistenceProviderResolverHolder;
-import javax.persistence.spi.PersistenceUnitInfo;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.spi.PersistenceProvider;
+import jakarta.persistence.spi.PersistenceProviderResolverHolder;
+import jakarta.persistence.spi.PersistenceUnitInfo;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -780,7 +780,7 @@ public class JbpmKieServerExtension implements KieServerExtension {
         persistenceProperties.put("hibernate.dialect", config.getConfigItemValue(KieServerConstants.CFG_PERSISTANCE_DIALECT, "org.hibernate.dialect.H2Dialect"));
         persistenceProperties.put("hibernate.default_schema", config.getConfigItemValue(KieServerConstants.CFG_PERSISTANCE_DEFAULT_SCHEMA));
         persistenceProperties.put("hibernate.transaction.jta.platform", config.getConfigItemValue(KieServerConstants.CFG_PERSISTANCE_TM, "JBossAS"));
-        persistenceProperties.put("javax.persistence.jtaDataSource", config.getConfigItemValue(KieServerConstants.CFG_PERSISTANCE_DS, "java:jboss/datasources/ExampleDS"));
+        persistenceProperties.put("jakarta.persistence.jtaDataSource", config.getConfigItemValue(KieServerConstants.CFG_PERSISTANCE_DS, "java:jboss/datasources/ExampleDS"));
 
         System.getProperties().stringPropertyNames()
                 .stream()
@@ -805,7 +805,7 @@ public class JbpmKieServerExtension implements KieServerExtension {
                 ((PersistenceUnitInfoImpl) info).setPersistenceUnitRootUrl(root);
             }
             // Need to explicitly set jtaDataSource here, its value is fetched in Hibernate logger before configuration
-            ((PersistenceUnitInfoImpl) info).setJtaDataSource(properties.get("javax.persistence.jtaDataSource"));
+            ((PersistenceUnitInfoImpl) info).setJtaDataSource(properties.get("jakarta.persistence.jtaDataSource"));
             getPersistenceUnitExtensionLoaders(this.getClass().getClassLoader()).stream()
                     .filter(PersistenceUnitExtensionsLoader::isEnabled)
                     .forEach(extensionsLoader -> extensionsLoader.loadExtensions(info));

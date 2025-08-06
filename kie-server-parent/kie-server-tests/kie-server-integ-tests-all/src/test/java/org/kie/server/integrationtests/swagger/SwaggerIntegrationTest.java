@@ -26,10 +26,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.Response;
 
 import org.jsoup.Jsoup;
 import org.junit.AfterClass;
@@ -39,8 +39,8 @@ import org.kie.server.integrationtests.config.TestConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static javax.ws.rs.core.Response.Status.CREATED;
-import static javax.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.core.Response.Status.CREATED;
+import static jakarta.ws.rs.core.Response.Status.OK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -48,10 +48,10 @@ import static org.junit.Assert.assertNotNull;
 public class SwaggerIntegrationTest {
 
     protected static final List<String> validStatusGet = Arrays.asList(Integer.toString(OK.getStatusCode()));
-    
+
     protected static final List<String> validStatusPost = Arrays.asList(Integer.toString(OK.getStatusCode()),
                                                                         Integer.toString(CREATED.getStatusCode()));
-    
+
     private static Logger logger = LoggerFactory.getLogger(SwaggerIntegrationTest.class);
     private static Client httpClient;
 
@@ -71,7 +71,7 @@ public class SwaggerIntegrationTest {
     @Test
     public void testSwaggerDocs() throws Exception {
         Response response = invokeGet(getContextRoot(3)+"docs/");
-        
+
         if (response.getStatus()!=200) {
             //Springboot Swagger Docs is located in other URL
             response = invokeGet(getContextRoot(1)+"api-docs?url="+getContextRoot(1)+"swagger.json");
@@ -87,26 +87,26 @@ public class SwaggerIntegrationTest {
     @SuppressWarnings("unchecked")
     public void testSwaggerJson() throws Exception {
         String swaggerStr = getSwaggerJson();
-        
+
         ObjectMapper om = new ObjectMapper();
         HashMap<String, Object> hm = (HashMap<String, Object>) om.readValue(swaggerStr, HashMap.class);
         assertNotNull(hm.get("swagger"));
         assertNotNull(hm.get("info"));
         assertEquals("KIE Server", ((HashMap<String, Object>) hm.get("info")).get("title"));
      }
-    
+
     @Test
     public void testSwaggerJsonContainsSchemaInResponse() {
         String swaggerStr = getSwaggerJson();
-        
+
         Swagger swagger = new SwaggerParser().parse(swaggerStr);
-        
+
         swagger.getPaths().forEach((key, item) -> {
             assertNonNullSchema(item.getGet(), validStatusGet, key);
             assertNonNullSchema(item.getPost(), validStatusPost, key);
         });
     }
-    
+
     protected String getSwaggerJson() {
         Response response = invokeGet(TestConfig.getKieServerHttpUrl()+"/swagger.json");
         assertResponse(response);
@@ -136,7 +136,7 @@ public class SwaggerIntegrationTest {
         assertEquals(200, response.getStatus());
         assertNotNull(response.getEntity());
     }
-    
+
     private void assertNonNullSchema(Operation operation, List<String> validStatus, String path) {
         if (operation != null && operation.getResponses() != null) {
             operation.getResponses().entrySet().stream()

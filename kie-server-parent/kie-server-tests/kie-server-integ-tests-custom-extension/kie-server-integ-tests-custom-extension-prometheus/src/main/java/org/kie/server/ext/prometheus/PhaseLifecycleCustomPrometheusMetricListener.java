@@ -16,7 +16,7 @@ package org.kie.server.ext.prometheus;
 
 import io.prometheus.client.Gauge;
 import org.optaplanner.core.impl.phase.event.PhaseLifecycleListenerAdapter;
-import org.optaplanner.core.impl.solver.scope.DefaultSolverScope;
+import org.optaplanner.core.impl.phase.scope.AbstractPhaseScope;
 
 public class PhaseLifecycleCustomPrometheusMetricListener extends PhaseLifecycleListenerAdapter {
 
@@ -33,8 +33,8 @@ public class PhaseLifecycleCustomPrometheusMetricListener extends PhaseLifecycle
     }
 
     @Override
-    public void solvingEnded(DefaultSolverScope solverScope) {
-        Long bestSolutionTimeMillis = solverScope.getBestSolutionTimeMillis();
+    public void phaseEnded(AbstractPhaseScope solverScope) {
+        Long bestSolutionTimeMillis = solverScope.getPhaseBestSolutionTimeMillis();
         randomGauge.labels(solverId).set(bestSolutionTimeMillis);
     }
 }

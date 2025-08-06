@@ -18,8 +18,8 @@ package org.kie.server.jms;
 /**
  * This exception is primarily used by the JMS code to indicate that an operation
  * that we expect to succeed has failed. In most of the cases, when this exception
- * is thrown, it is due to a failure by the underlying JMS framework ({@link javax.jms.Session},
- * {@link javax.jms.Connection}).
+ * is thrown, it is due to a failure by the underlying JMS framework ({@link jakarta.jms.Session},
+ * {@link jakarta.jms.Connection}).
  */
 public class JMSRuntimeException
         extends RuntimeException  {

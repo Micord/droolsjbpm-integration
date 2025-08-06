@@ -30,9 +30,8 @@ import org.hibernate.type.Type;
 public class OverrideId implements IdentifierGenerator, Configurable {
 
     public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
-        Serializable id = session.getEntityPersister(null, object)
-                                 .getClassMetadata().getIdentifier(object, session);
-        return id;
+        return (Serializable) session.getEntityPersister(null, object)
+                                 .getEntityMappingType().getIdentifierMapping().getIdentifierIfNotUnsaved(object, session);
 	}
 
     @Override

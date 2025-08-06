@@ -30,7 +30,7 @@ import org.kie.server.services.taskassigning.core.model.TaskAssigningSolution;
 import org.kie.server.services.taskassigning.core.model.TaskOrUser;
 import org.kie.server.services.taskassigning.core.model.User;
 import org.junit.Test;
-import org.optaplanner.core.impl.score.director.ScoreDirector;
+import org.optaplanner.core.api.score.director.ScoreDirector;
 
 import static org.kie.server.services.taskassigning.core.TestDataSet.SET_OF_100TASKS_5USERS_SOLUTION;
 import static org.kie.server.services.taskassigning.core.TestDataSet.SET_OF_24TASKS_8USERS_SOLUTION;

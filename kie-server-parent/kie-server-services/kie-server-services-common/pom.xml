@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.kie.server</groupId>
     <artifactId>kie-server-services</artifactId>
-    <version>7.74.1.Final</version>
+    <version>7.74.1.Final-Micord.1</version>
   </parent>
 
   <artifactId>kie-server-services-common</artifactId>
@@ -101,7 +101,7 @@
     <!-- RestEasy JAX-RS dependencies -->
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
-      <artifactId>resteasy-jaxrs</artifactId>
+      <artifactId>resteasy-core-spi</artifactId>
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
@@ -131,7 +131,7 @@
     </dependency>
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
-      <artifactId>resteasy-jackson-provider</artifactId>
+      <artifactId>resteasy-jackson2-provider</artifactId>
       <scope>runtime</scope>
     </dependency>
     <!-- JSON (un)marshalling -->
@@ -149,7 +149,7 @@
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
-      <artifactId> jackson-module-jaxb-annotations</artifactId>
+      <artifactId>jackson-module-jakarta-xmlbind-annotations</artifactId>
     </dependency>
 
     <dependency>
@@ -185,7 +185,7 @@
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
-    
+
     <dependency>
     	<groupId>org.xmlunit</groupId>
     	<artifactId>xmlunit-core</artifactId>
@@ -196,7 +196,7 @@
     	<artifactId>xmlunit-matchers</artifactId>
     	<scope>test</scope>
     </dependency>
-    
+
     <dependency>
     	<groupId>org.skyscreamer</groupId>
     	<artifactId>jsonassert</artifactId>

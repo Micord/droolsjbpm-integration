@@ -20,8 +20,8 @@ import java.util.ArrayList;
 
 import org.kie.server.services.taskassigning.core.model.TaskAssigningSolution;
 import org.kie.server.services.taskassigning.core.model.User;
-import org.optaplanner.core.impl.score.director.ScoreDirector;
-import org.optaplanner.core.impl.solver.ProblemFactChange;
+import org.optaplanner.core.api.score.director.ScoreDirector;
+import org.optaplanner.core.api.solver.ProblemFactChange;
 
 import static org.kie.server.services.taskassigning.core.model.solver.realtime.ProblemFactChangeUtil.releaseAllTasks;
 

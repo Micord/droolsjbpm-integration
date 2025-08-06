@@ -57,7 +57,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -69,24 +69,24 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class RulesOnlyKieServerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(RulesOnlyKieServerTest.class);
-    
+
     static final String ARTIFACT_ID = "rules";
     static final String GROUP_ID = "org.jbpm.test";
     static final String VERSION = "1.0.0";
 
     @LocalServerPort
-    private int port;    
-   
+    private int port;
+
     private static final String JOHN = "john";
     private static final String PASSWORD = "usetheforce123@";
-    
+
     private String containerId = "rules";
-    
+
     private KieServicesClient kieServicesClient;
-    
+
     @Autowired
     private SampleAgendaEventListener listener;
-    
+
     @BeforeClass
     public static void generalSetup() {
         System.setProperty(KieServerConstants.KIE_SERVER_MODE, KieServerMode.PRODUCTION.name());
@@ -102,17 +102,17 @@ public class RulesOnlyKieServerTest {
     public void setup() {
         listener.clear();
         org.kie.server.api.model.ReleaseId releaseId = new org.kie.server.api.model.ReleaseId(GROUP_ID, ARTIFACT_ID, VERSION);
-        
+
         String serverUrl = "http://localhost:" + port + "/rest/server";
         KieServicesConfiguration configuration = KieServicesFactory.newRestConfiguration(serverUrl, JOHN, PASSWORD);
         configuration.setTimeout(60000);
         configuration.setMarshallingFormat(MarshallingFormat.JSON);
-        this.kieServicesClient =  KieServicesFactory.newKieServicesClient(configuration); 
-        
-        KieContainerResource resource = new KieContainerResource(containerId, releaseId);        
+        this.kieServicesClient =  KieServicesFactory.newKieServicesClient(configuration);
+
+        KieContainerResource resource = new KieContainerResource(containerId, releaseId);
         kieServicesClient.createContainer(containerId, resource);
     }
-    
+
     @After
     public void cleanup() {
         if (kieServicesClient != null) {
@@ -120,24 +120,24 @@ public class RulesOnlyKieServerTest {
             logger.info("Container {} disposed with response - {}", containerId, response.getMsg());
         }
     }
-  
+
     @Test
     public void testInvokeRulesOnStateless() {
         testInvokeRulesOn("defaultStatelessKieSession");
     }
-    
+
     @Test
     public void testInvokeRulesOnStatefull() {
         testInvokeRulesOn("defaultKieSession");
     }
-    
+
     private void testInvokeRulesOn(String ksessionName) {
 
         List<Command<?>> commands = new ArrayList<Command<?>>();
         KieCommands cmdFactory = KieServices.Factory.get().getCommands();
-        
+
         commands.add(cmdFactory.newInsert("John"));
-        
+
         commands.add(cmdFactory.newFireAllRules("fire-identifier"));
         RuleServicesClient rulesClient = kieServicesClient.getServicesClient(RuleServicesClient.class);
         ServiceResponse<ExecutionResults> reply = rulesClient.executeCommandsWithResults("rules", cmdFactory.newBatchExecution(commands, ksessionName));
@@ -145,25 +145,25 @@ public class RulesOnlyKieServerTest {
             throw new RuntimeException("executeRule failed with message: " + reply.getMsg());
         }
         ExecutionResults result = reply.getResult();
-        
+
         assertNotNull(result);
-        
+
         assertEquals(1, listener.getFired().size());
         assertEquals("Your First Rule",listener.getFired().get(0));
     }
-    
-    
+
+
     private static void createKJar() {
         KieServices kieServices = KieServices.get();
-        
+
         ReleaseId releaseId = kieServices.newReleaseId(GROUP_ID, ARTIFACT_ID, VERSION);
         KieFileSystem kfs = kieServices.newKieFileSystem();
         kfs.generateAndWritePomXML(releaseId);
-        
+
         byte[] pom = kfs.read("pom.xml");
-        
+
         kfs.write("src/main/resources/sample-rule.drl", new ClassPathResource("sample-rules.drl"));
-        
+
         KieBuilder kb = kieServices.newKieBuilder(kfs).buildAll();
         if (kb.getResults().hasMessages(Message.Level.ERROR)) {
             for (Message result : kb.getResults().getMessages()) {
@@ -173,7 +173,7 @@ public class RulesOnlyKieServerTest {
         }
         InternalKieModule kieModule = (InternalKieModule) kieServices.getRepository().getKieModule(releaseId);
         byte[] kjar = kieModule.getBytes();
-                
+
         MavenRepository repository = getMavenRepository();
         repository.installArtifact(releaseId, kjar, pom);
     }

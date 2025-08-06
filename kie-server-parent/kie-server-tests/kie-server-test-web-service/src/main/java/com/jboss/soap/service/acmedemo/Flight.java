@@ -4,16 +4,16 @@ package com.jboss.soap.service.acmedemo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for flight complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="flight">
  *   &lt;complexContent>
@@ -30,8 +30,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "flight", propOrder = {
@@ -58,11 +58,11 @@ public class Flight implements Serializable {
 
     /**
      * Gets the value of the company property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCompany() {
         return company;
@@ -70,11 +70,11 @@ public class Flight implements Serializable {
 
     /**
      * Sets the value of the company property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCompany(String value) {
         this.company = value;
@@ -82,7 +82,7 @@ public class Flight implements Serializable {
 
     /**
      * Gets the value of the planeId property.
-     * 
+     *
      */
     public int getPlaneId() {
         return planeId;
@@ -90,7 +90,7 @@ public class Flight implements Serializable {
 
     /**
      * Sets the value of the planeId property.
-     * 
+     *
      */
     public void setPlaneId(int value) {
         this.planeId = value;
@@ -98,11 +98,11 @@ public class Flight implements Serializable {
 
     /**
      * Gets the value of the ratePerPerson property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigDecimal }
-     *     
+     *
      */
     public BigDecimal getRatePerPerson() {
         return ratePerPerson;
@@ -110,11 +110,11 @@ public class Flight implements Serializable {
 
     /**
      * Sets the value of the ratePerPerson property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigDecimal }
-     *     
+     *
      */
     public void setRatePerPerson(BigDecimal value) {
         this.ratePerPerson = value;
@@ -122,11 +122,11 @@ public class Flight implements Serializable {
 
     /**
      * Gets the value of the startCity property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getStartCity() {
         return startCity;
@@ -134,11 +134,11 @@ public class Flight implements Serializable {
 
     /**
      * Sets the value of the startCity property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setStartCity(String value) {
         this.startCity = value;
@@ -146,11 +146,11 @@ public class Flight implements Serializable {
 
     /**
      * Gets the value of the targetCity property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getTargetCity() {
         return targetCity;
@@ -158,11 +158,11 @@ public class Flight implements Serializable {
 
     /**
      * Sets the value of the targetCity property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setTargetCity(String value) {
         this.targetCity = value;
@@ -170,11 +170,11 @@ public class Flight implements Serializable {
 
     /**
      * Gets the value of the travelDate property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getTravelDate() {
         return travelDate;
@@ -182,11 +182,11 @@ public class Flight implements Serializable {
 
     /**
      * Sets the value of the travelDate property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setTravelDate(String value) {
         this.travelDate = value;

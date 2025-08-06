@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.naming.InitialContext;
-import javax.transaction.UserTransaction;
+import jakarta.transaction.UserTransaction;
 
 import org.jbpm.process.audit.ProcessInstanceLog;
 import org.junit.Test;
@@ -55,7 +55,7 @@ public class PerProcessInstanceWithExternalTXSpringTest extends AbstractJbpmSpri
         super(contextPath, runtimeManagerContext);
     }
 
-   
+
     @Test(timeout=100000000)
     public void testCompleteTasksWithSeparateThread() throws Exception {
 
@@ -84,34 +84,34 @@ public class PerProcessInstanceWithExternalTXSpringTest extends AbstractJbpmSpri
         List<TaskSummary> tasks = taskService.getTasksAssignedAsPotentialOwner(USER_JOHN, "en-UK");
         System.out.println("Found " + tasks.size() + " task(s) for user '"+USER_JOHN+"'");
         assertEquals(1, tasks.size());
-        
+
         manager.disposeRuntimeEngine(engine);
 
         final Long processInstanceId = processInstance.getId();
         final Long firstTaskId = tasks.get(0).getId();
-        
+
         Thread t = new Thread(new Runnable() {
-            
-            
+
+
             @Override
             public void run() {
                 UserTransaction ut = null;
                 try {
                     ut = InitialContext.doLookup("java:comp/UserTransaction");
-                
+
                     ut.begin();
                     RuntimeEngine engine = manager.getRuntimeEngine(ProcessInstanceIdContext.get(processInstanceId));
                     // call ksession so it will initiate first tx
                     engine.getKieSession();
                     TaskService taskService = engine.getTaskService();
-    
+
                     taskService.start(firstTaskId, USER_JOHN);
                     taskService.complete(firstTaskId, USER_JOHN, null);
-                    
+
                     System.out.println("Task for john completed");
-                    
+
                     manager.disposeRuntimeEngine(engine);
-                    
+
                     ut.commit();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -122,20 +122,20 @@ public class PerProcessInstanceWithExternalTXSpringTest extends AbstractJbpmSpri
                     }
                 }
             }
-        });        
+        });
         t.start();
         t.join();
-        
+
 
         tasks = taskService.getTasksAssignedAsPotentialOwner(USER_MARY, "en-UK");
         System.out.println("Found " + tasks.size() + " task(s) for user '"+USER_MARY+"'");
         assertEquals(1, tasks.size());
-        
+
         final Long secondTaskId = tasks.get(0).getId();
-        
+
         t = new Thread(new Runnable() {
-            
-            
+
+
             @Override
             public void run() {
                 UserTransaction ut = null;
@@ -145,12 +145,12 @@ public class PerProcessInstanceWithExternalTXSpringTest extends AbstractJbpmSpri
                     RuntimeEngine engine = manager.getRuntimeEngine(ProcessInstanceIdContext.get(processInstanceId));
                     engine.getKieSession();
                     TaskService taskService = engine.getTaskService();
-    
+
                     taskService.start(secondTaskId, USER_MARY);
                     taskService.complete(secondTaskId, USER_MARY, null);
-                    
+
                     System.out.println("Task for mary completed");
-                    
+
                     manager.disposeRuntimeEngine(engine);
                     ut.commit();
                 } catch (Exception e) {
@@ -162,7 +162,7 @@ public class PerProcessInstanceWithExternalTXSpringTest extends AbstractJbpmSpri
                     }
                 }
             }
-        });        
+        });
         t.start();
         t.join();
 
@@ -173,7 +173,7 @@ public class PerProcessInstanceWithExternalTXSpringTest extends AbstractJbpmSpri
             assertNull(processInstance);
             System.out.println("Process instance completed");
         } catch (SessionNotFoundException e) {
-            
+
         }
     }
 }

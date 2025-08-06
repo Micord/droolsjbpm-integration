@@ -47,7 +47,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -64,16 +64,16 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER
 @TestPropertySource(locations="classpath:application-test.properties")
 @DirtiesContext(classMode= AFTER_CLASS)
 public class KieServerMigrationTest {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(KieServerMigrationTest.class);
 
     static final String ARTIFACT_ID = "evaluation";
     static final String GROUP_ID = "org.jbpm.test";
     static final String VERSION = "1.0.0";
-    
+
     @LocalServerPort
-    private int port;    
-   
+    private int port;
+
     private static final String JOHN = "john";
     private static final String PASSWORD = "usetheforce123@";
 
@@ -81,9 +81,9 @@ public class KieServerMigrationTest {
     private String containerId = "evaluation";
     private String containerId2 = "evaluation2";
     private String processId = "evaluation";
-    
+
     private KieServicesClient kieServicesClient;
-   
+
     @BeforeClass
     public static void generalSetup() {
         System.setProperty(KieServerConstants.KIE_SERVER_MODE, KieServerMode.PRODUCTION.name());
@@ -99,7 +99,7 @@ public class KieServerMigrationTest {
     public static void generalCleanup() {
         System.clearProperty(KieServerConstants.KIE_SERVER_MODE);
     }
-    
+
     @Before
     public void setup() {
         ReleaseId releaseId = new ReleaseId(GROUP_ID, ARTIFACT_ID, VERSION);
@@ -108,7 +108,7 @@ public class KieServerMigrationTest {
         configuration.setTimeout(60000);
         configuration.setMarshallingFormat(MarshallingFormat.JSON);
         this.kieServicesClient =  KieServicesFactory.newKieServicesClient(configuration);
-        
+
         KieContainerResource resource = new KieContainerResource(containerId, releaseId);
         resource.setContainerAlias(containerAlias);
         KieServerConfigItem configItem = new KieServerConfigItem();
@@ -117,13 +117,13 @@ public class KieServerMigrationTest {
         configItem.setType("BPM");
         resource.addConfigItem(configItem);
         kieServicesClient.createContainer(containerId, resource);
-        
+
         KieContainerResource resource2 = new KieContainerResource(containerId2, releaseId);
         resource2.setContainerAlias(containerAlias);
         resource2.addConfigItem(configItem);
         kieServicesClient.createContainer(containerId2, resource2);
     }
-    
+
     @After
     public void cleanup() {
         if (kieServicesClient != null) {
@@ -133,7 +133,7 @@ public class KieServerMigrationTest {
             logger.info("Container {} disposed with response - {}", containerId2, response.getMsg());
         }
     }
-    
+
     @Test
     public void testProcessStartAndAbort() {
 
@@ -141,19 +141,19 @@ public class KieServerMigrationTest {
         QueryServicesClient queryClient = kieServicesClient.getServicesClient(QueryServicesClient.class);
         ProcessServicesClient processClient = kieServicesClient.getServicesClient(ProcessServicesClient.class);
         ProcessAdminServicesClient processAdminClient = kieServicesClient.getServicesClient(ProcessAdminServicesClient.class);
- 
+
         // start process instance
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("employee", "john");
         params.put("reason", "test on spring boot");
         Long processInstanceId = processClient.startProcess(containerId, processId, params);
         assertNotNull(processInstanceId);
-       
+
         ProcessInstance processInstance = queryClient.findProcessInstanceById(processInstanceId);
         assertNotNull(processInstance);
         assertEquals(1, processInstance.getState().intValue());
         assertEquals(containerId, processInstance.getContainerId());
-        
+
         try {
             MigrationReportInstance report = processAdminClient.migrateProcessInstance(containerId, processInstanceId, containerId2, processId);
             assertTrue(report.isSuccessful());
@@ -172,12 +172,12 @@ public class KieServerMigrationTest {
             fail("Migration failed: " + ex);
             throw ex;
         }
-        //abort process instance (outside try/catch), to not hide exception that will certainly occur if  migration fails 
+        //abort process instance (outside try/catch), to not hide exception that will certainly occur if  migration fails
         processClient.abortProcessInstance(containerId2, processInstanceId);
         processInstance = queryClient.findProcessInstanceById(processInstanceId);
         assertNotNull(processInstance);
         assertEquals(3, processInstance.getState().intValue());
     }
 
-   
+
 }

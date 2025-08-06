@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.io.IOUtils;
@@ -483,5 +483,3 @@ class Person {
         this.dateBirth = dateBirth;
     }
 }
-
-

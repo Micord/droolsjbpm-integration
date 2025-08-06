@@ -30,13 +30,14 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -60,10 +61,10 @@ public class KieServerRouterControllerRecoveryTest {
     private static File repository;
 
     private static String serverUrl;
-    
+
     private WireMockServer wireMockServer;
     private int mockKieServerPort;
-    
+
     private String CONTAINER_JSON =
             "{\"containerId\" : \"test\","
             + "\"alias\" : \"test-alias\","
@@ -76,14 +77,14 @@ public class KieServerRouterControllerRecoveryTest {
         mockKieServerPort = allocatePort();
         System.setProperty(KieServerRouterConstants.KIE_SERVER_CONTROLLER_ATTEMPT_INTERVAL, "1");
         System.setProperty(KieServerRouterConstants.KIE_CONTROLLER, "http://localhost:" + mockKieServerPort);
-        
+
         configureMockServer();
-                
+
         // setup repository for config of router
         repository = new File("target/controller-router-repo");
         repository.mkdirs();
         System.setProperty(KieServerRouterConstants.ROUTER_REPOSITORY_DIR, repository.getAbsolutePath());
-     
+
 
         // setup and start router
         Integer port = allocatePort();
@@ -120,10 +121,10 @@ public class KieServerRouterControllerRecoveryTest {
             response = clientRequest.request(MediaType.APPLICATION_JSON_TYPE).put(Entity.json(CONTAINER_JSON));
             Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
             response.close();
-            
+
             CountDownLatch latch = new CountDownLatch(1);
             CountDownLatch deleteLatch = new CountDownLatch(1);
-            wireMockServer.addMockServiceRequestListener(new RequestListener() {                
+            wireMockServer.addMockServiceRequestListener(new RequestListener() {
                 @Override
                 public void requestReceived(Request request, com.github.tomakehurst.wiremock.http.Response response) {
                     if (request.getUrl().equals("/management/servers/kie-server-router/containers/test") && request.getMethod().name().equalsIgnoreCase("PUT")) {
@@ -131,28 +132,28 @@ public class KieServerRouterControllerRecoveryTest {
                     }
                     if (request.getUrl().equals("/management/servers/kie-server-router/containers/test") && request.getMethod().name().equalsIgnoreCase("DELETE")) {
                         deleteLatch.countDown();
-                    } 
+                    }
                 }
             });
             wireMockServer.start();
-            
+
             latch.await(5, TimeUnit.SECONDS);
             wireMockServer.verify(1, putRequestedFor(urlEqualTo("/management/servers/kie-server-router/containers/test")));
-            
+
             // let's not stop and simulate delete of container
             wireMockServer.stop();
-            
+
             clientRequest = newRequest(serverUrl + "/mgmt/remove");
             logger.debug("[POST] " + clientRequest.getUri());
 
             response = clientRequest.request(MediaType.APPLICATION_JSON_TYPE).put(Entity.json(CONTAINER_JSON));
             Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
             response.close();
-            
+
             wireMockServer.start();
             deleteLatch.await(5, TimeUnit.SECONDS);
             wireMockServer.verify(1, deleteRequestedFor(urlEqualTo("/management/servers/kie-server-router/containers/test")));
-            
+
         } finally {
             if(response != null) {
                 response.close();
@@ -177,15 +178,15 @@ public class KieServerRouterControllerRecoveryTest {
     protected WebTarget newRequest(String uriString) {
 
         if(httpClient == null) {
-            httpClient = new ResteasyClientBuilder()
-                    .establishConnectionTimeout(10, TimeUnit.SECONDS)
-                    .socketTimeout(10, TimeUnit.SECONDS)
+            httpClient = new ResteasyClientBuilderImpl()
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(10, TimeUnit.SECONDS)
                     .register(new Authenticator(TestConfig.getUsername(), TestConfig.getPassword()))
                     .build();
         }
         return httpClient.target(uriString);
     }
-    
+
     private void configureMockServer() {
         wireMockServer = new WireMockServer(mockKieServerPort);
         wireMockServer.stubFor(put(urlEqualTo("/server/kie-server-router"))
@@ -199,10 +200,10 @@ public class KieServerRouterControllerRecoveryTest {
         wireMockServer.stubFor(delete(urlEqualTo("/management/servers/kie-server-router/containers/test"))
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withBody("")));     
+                        .withBody("")));
         wireMockServer.stubFor(delete(urlPathEqualTo("/server/kie-server-router"))
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withBody(""))); 
+                        .withBody("")));
     }
 }

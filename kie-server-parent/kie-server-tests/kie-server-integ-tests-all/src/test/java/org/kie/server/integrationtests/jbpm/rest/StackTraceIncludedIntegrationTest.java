@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -23,8 +23,8 @@ import static org.kie.server.api.rest.RestURI.build;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.Response;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -40,12 +40,12 @@ import org.kie.server.integrationtests.shared.basetests.RestOnlyBaseIntegrationT
 public class StackTraceIncludedIntegrationTest extends RestOnlyBaseIntegrationTest {
 
     private static ReleaseId releaseId = new ReleaseId("org.kie.server.testing", "definition-project", "1.0.0.Final");
-   
+
     private static Map<MarshallingFormat, String> acceptHeadersByFormat = new HashMap<MarshallingFormat, String>();
-    
+
     private static final String CONTAINER = "definition-project";
-    
-    
+
+
     @BeforeClass
     public static void buildAndDeployArtifacts() {
         KieServerDeployer.buildAndDeployCommonMavenParent();
@@ -56,7 +56,7 @@ public class StackTraceIncludedIntegrationTest extends RestOnlyBaseIntegrationTe
 
         createContainer(CONTAINER, releaseId);
     }
-  
+
     @Test
     public void testStoreDocumentError() throws Exception {
         KieServerUtil.deleteDocumentStorageFolder();
@@ -70,10 +70,10 @@ public class StackTraceIncludedIntegrationTest extends RestOnlyBaseIntegrationTe
             WebTarget clientRequest = newRequest(build(TestConfig.getKieServerHttpUrl(), DOCUMENT_URI, empty));
             response = clientRequest.request(acceptHeadersByFormat.get(marshallingFormat)).post(createEntity(documentEntity));
             String responseBody = response.readEntity(String.class);
-            Assert.assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus()); 
-            Assert.assertThat(responseBody, 
+            Assert.assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+            Assert.assertThat(responseBody,
             		    allOf(containsString("org.kie.server.remote.rest.jbpm.DocumentResource.createDocument"),
-            		          containsString("org.kie.server.services.impl.marshal.MarshallerHelper.unmarshal")));    
+            		          containsString("org.kie.server.services.impl.marshal.MarshallerHelper.unmarshal")));
         } finally {
             if(response != null) {
                 response.close();

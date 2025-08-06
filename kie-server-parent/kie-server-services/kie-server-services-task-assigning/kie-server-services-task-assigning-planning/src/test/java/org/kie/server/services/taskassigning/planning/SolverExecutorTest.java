@@ -32,11 +32,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.optaplanner.core.api.score.Score;
+import org.optaplanner.core.api.solver.ProblemFactChange;
 import org.optaplanner.core.api.solver.Solver;
+import org.optaplanner.core.api.solver.change.ProblemChange;
 import org.optaplanner.core.api.solver.event.BestSolutionChangedEvent;
 import org.optaplanner.core.api.solver.event.SolverEventListener;
 import org.optaplanner.core.impl.score.director.ScoreDirectorFactory;
-import org.optaplanner.core.impl.solver.ProblemFactChange;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doThrow;
@@ -226,22 +227,22 @@ public class SolverExecutorTest extends RunnableBaseTest<SolverExecutor> {
             return true;
         }
 
-        @Override
+//        @Override
         public TaskAssigningSolution getBestSolution() {
             return null;
         }
 
-        @Override
+//        @Override
         public Score getBestScore() {
             return null;
         }
 
-        @Override
+//        @Override
         public String explainBestScore() {
             return null;
         }
 
-        @Override
+//        @Override
         public long getTimeMillisSpent() {
             return 0;
         }
@@ -253,6 +254,21 @@ public class SolverExecutorTest extends RunnableBaseTest<SolverExecutor> {
 
         @Override
         public boolean isTerminateEarly() {
+            return false;
+        }
+
+        @Override
+        public void addProblemChange(ProblemChange<TaskAssigningSolution> problemChange) {
+
+        }
+
+        @Override
+        public void addProblemChanges(List<ProblemChange<TaskAssigningSolution>> problemChanges) {
+
+        }
+
+        @Override
+        public boolean isEveryProblemChangeProcessed() {
             return false;
         }
 
@@ -281,7 +297,7 @@ public class SolverExecutorTest extends RunnableBaseTest<SolverExecutor> {
 
         }
 
-        @Override
+//        @Override
         public ScoreDirectorFactory<TaskAssigningSolution> getScoreDirectorFactory() {
             return null;
         }

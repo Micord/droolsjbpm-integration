@@ -19,10 +19,10 @@ package org.kie.server.api.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -31,7 +31,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("kie-server-state-info")
 public class KieServerStateInfo {
 
-    @XmlElement(name = "server-id") 
+    @XmlElement(name = "server-id")
     private String serverId;
 
     @XmlElement(name = "server-location")
@@ -56,7 +56,7 @@ public class KieServerStateInfo {
         this.containers = containers;
     }
 
-    
+
     public String getServerId() {
         return serverId;
     }
@@ -89,7 +89,7 @@ public class KieServerStateInfo {
         this.containers = containers;
     }
 
-    
+
     public String getLocation() {
         return location;
     }

@@ -32,7 +32,7 @@ public class HardMediumSoftBigDecimalScoreMapper extends MappingDefinition {
         super(HardMediumSoftBigDecimalScore.class);
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod(new JavaReflectionMethod(HardMediumSoftBigDecimalScore.class.getMethod("valueOfUninitialized",
+        factoryMapping.setMethod(new JavaReflectionMethod(HardMediumSoftBigDecimalScore.class.getMethod("ofUninitialized",
                                                                                                         int.class,
                                                                                                         BigDecimal.class,
                                                                                                         BigDecimal.class,

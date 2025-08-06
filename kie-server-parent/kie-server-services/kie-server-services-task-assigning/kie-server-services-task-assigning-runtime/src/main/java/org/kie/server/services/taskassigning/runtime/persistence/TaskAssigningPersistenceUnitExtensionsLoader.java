@@ -18,7 +18,7 @@ package org.kie.server.services.taskassigning.runtime.persistence;
 
 import java.net.URL;
 
-import javax.persistence.spi.PersistenceUnitInfo;
+import jakarta.persistence.spi.PersistenceUnitInfo;
 
 import org.kie.server.services.jbpm.jpa.PersistenceUnitExtensionsLoader;
 import org.slf4j.Logger;
@@ -59,4 +59,3 @@ public class TaskAssigningPersistenceUnitExtensionsLoader implements Persistence
         }
     }
 }
-

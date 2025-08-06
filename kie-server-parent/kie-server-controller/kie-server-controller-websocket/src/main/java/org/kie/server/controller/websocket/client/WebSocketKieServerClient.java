@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.websocket.Session;
+import jakarta.websocket.Session;
 
 import org.kie.api.command.Command;
 import org.kie.internal.process.CorrelationKey;
@@ -76,13 +76,13 @@ import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("unchecked")
 public class WebSocketKieServerClient implements KieServicesClient {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(WebSocketKieServerClient.class);
-    
+
     private WebSocketSessionManager manager = WebSocketSessionManager.getInstance();
     private String url;
     private KieServerInfo serverInfo;
-    
+
     public WebSocketKieServerClient(String url) {
         this.url = url;
         this.serverInfo = manager.getServerInfoByUrl(url);
@@ -99,18 +99,18 @@ public class WebSocketKieServerClient implements KieServicesClient {
                 throw new KieServicesException("Server that this client is connected to has no capabilities to handle " + serviceClient.getSimpleName());
             }
             return (T) new QueryServicesClient() {
-                
-                
+
+
                 @Override
                 public void unregisterQuery(String queryName) {
                     throwUnsupportedException();
                 }
-                
+
                 @Override
                 public void setResponseHandler(ResponseHandler responseHandler) {
                     throwUnsupportedException();
                 }
-                
+
                 @Override
                 public QueryDefinition replaceQuery(QueryDefinition queryDefinition) {
                     CommandScript script = new CommandScript(Collections.singletonList((KieServerCommand) new DescriptorCommand("QueryDataService", "replaceQuery",
@@ -118,31 +118,31 @@ public class WebSocketKieServerClient implements KieServicesClient {
                     sendCommandToAllSessions(script, new WebSocketServiceResponse(true, (message) -> {
                         WebSocketUtils.unmarshal(message, ServiceResponsesList.class);
                         return null;
-                    })).getResponses();  
-                    
+                    })).getResponses();
+
                     return queryDefinition;
                 }
-                
+
                 @Override
                 public QueryDefinition registerQuery(QueryDefinition queryDefinition) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public <T> List<T> query(String queryName, String mapper, String builder, Map<String, Object> parameters, Integer page, Integer pageSize, Class<T> resultType) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public <T> List<T> query(String queryName, String mapper, QueryFilterSpec filterSpec, Integer page, Integer pageSize, Class<T> resultType) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public <T> List<T> query(String queryName, String mapper, String orderBy, Integer page, Integer pageSize, Class<T> resultType) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public <T> List<T> query(String queryName, String mapper, Integer page, Integer pageSize, Class<T> resultType) {
                     return throwUnsupportedException();
@@ -152,187 +152,187 @@ public class WebSocketKieServerClient implements KieServicesClient {
                 public <T> List<T> query(String containerId, String queryName, String mapper, String builder, Map<String, Object> parameters, Integer page, Integer pageSize, Class<T> resultType) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public QueryDefinition getQuery(String queryName) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<QueryDefinition> getQueries(Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<VariableInstance> findVariablesCurrentState(Long processInstanceId) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<VariableInstance> findVariableHistory(Long processInstanceId, String variableName, Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessDefinition> findProcessesById(String processId) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessDefinition> findProcessesByContainerId(String containerId, Integer page, Integer pageSize, String sort, boolean sortOrder) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessDefinition> findProcessesByContainerId(String containerId, Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessDefinition> findProcesses(String filter, Integer page, Integer pageSize, String sort, boolean sortOrder) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessDefinition> findProcesses(Integer page, Integer pageSize, String sort, boolean sortOrder) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessDefinition> findProcesses(String filter, Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessDefinition> findProcesses(Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByVariableAndValue(String variableName, String variableValue, List<Integer> status, Integer page, Integer pageSize, String sort, boolean sortOrder) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByVariableAndValue(String variableName, String variableValue, List<Integer> status, Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByVariable(String variableName, List<Integer> status, Integer page, Integer pageSize, String sort, boolean sortOrder) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByVariable(String variableName, List<Integer> status, Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByStatus(List<Integer> status, Integer page, Integer pageSize, String sort, boolean sortOrder) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByStatus(List<Integer> status, Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByProcessName(String processName, List<Integer> status, Integer page, Integer pageSize, String sort, boolean sortOrder) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByProcessName(String processName, List<Integer> status, Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByProcessId(String processId, List<Integer> status, Integer page, Integer pageSize, String sort, boolean sortOrder) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByProcessId(String processId, List<Integer> status, Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByInitiator(String initiator, List<Integer> status, Integer page, Integer pageSize, String sort, boolean sortOrder) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByInitiator(String initiator, List<Integer> status, Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByCorrelationKey(CorrelationKey correlationKey, Integer page, Integer pageSize, String sort, boolean sortOrder) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByCorrelationKey(CorrelationKey correlationKey, Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByContainerId(String containerId, List<Integer> status, Integer page, Integer pageSize, String sort, boolean sortOrder) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstancesByContainerId(String containerId, List<Integer> status, Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstances(Integer page, Integer pageSize, String sort, boolean sortOrder) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<ProcessInstance> findProcessInstances(Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public ProcessInstance findProcessInstanceById(Long processInstanceId, boolean withVars) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public ProcessInstance findProcessInstanceById(Long processInstanceId) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public ProcessInstance findProcessInstanceByCorrelationKey(CorrelationKey correlationKey) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public ProcessDefinition findProcessByContainerIdProcessId(String containerId, String processId) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<NodeInstance> findNodeInstances(Long processInstanceId, Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public NodeInstance findNodeInstanceByWorkItemId(Long processInstanceId, Long workItemId) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<NodeInstance> findCompletedNodeInstances(Long processInstanceId, Integer page, Integer pageSize) {
                     return throwUnsupportedException();
                 }
-                
+
                 @Override
                 public List<NodeInstance> findActiveNodeInstances(Long processInstanceId, Integer page, Integer pageSize) {
                     return throwUnsupportedException();
@@ -377,54 +377,54 @@ public class WebSocketKieServerClient implements KieServicesClient {
 
         return throwUnsupportedException();
     }
-    
+
     protected ServiceResponsesList sendCommand(CommandScript script, WebSocketServiceResponse response) {
         logger.debug("About to send command {} to kie server located at {}", script, url);
         List<Session> sessions = manager.getByUrl(url);
-        
+
         Session session = sessions.get(0);
-        
+
         logger.debug("Web Socket session ({}) is open {}", session.getId(), session.isOpen());
         String content = WebSocketUtils.marshal(script);
         logger.debug("Content to be sent over Web Socket '{}'", content);
         try {
             manager.getHandler(session.getId()).addHandler(response);
-            
+
             session.getBasicRemote().sendText(content);
             logger.debug("Message successfully sent to kie server");
             return new ServiceResponsesList(Arrays.asList(response));
         } catch (IOException e) {
            throw new RuntimeException(e);
         }
-        
+
     }
-    
+
     protected ServiceResponsesList sendCommandToAllSessions(CommandScript script, WebSocketServiceResponse response) {
         logger.debug("About to send command {} to kie server located at {}", script, url);
         List<Session> sessions = manager.getByUrl(url);
         List<ServiceResponse<?>> responses = new ArrayList<>();
         ServiceResponsesList result = new ServiceResponsesList(responses);
-               
+
         for (Session session : sessions) {
-        
+
             logger.debug("Web Socket session ({}) is open {}", session.getId(), session.isOpen());
             String content = WebSocketUtils.marshal(script);
             logger.debug("Content to be sent over Web Socket '{}'", content);
             try {
                 manager.getHandler(session.getId()).addHandler(response);
-                
+
                 session.getBasicRemote().sendText(content);
                 logger.debug("Message successfully sent to kie server");
                 responses.add(response);
             } catch (IOException e) {
                throw new RuntimeException(e);
             }
-        
+
         }
         return result;
     }
 
-    
+
     @Override
     public ServiceResponse<KieServerInfo> getServerInfo() {
         CommandScript script = new CommandScript(Collections.singletonList((KieServerCommand) new GetServerInfoCommand()));
@@ -432,7 +432,7 @@ public class WebSocketKieServerClient implements KieServicesClient {
             ServiceResponsesList list = WebSocketUtils.unmarshal(message, ServiceResponsesList.class);
             return list.getResponses().get(0);
         })).getResponses().get(0);
-        
+
         return response;
     }
 
@@ -449,7 +449,7 @@ public class WebSocketKieServerClient implements KieServicesClient {
             ServiceResponsesList list = WebSocketUtils.unmarshal(message, ServiceResponsesList.class);
             return list.getResponses().get(0);
         })).getResponses().get(0);
-        
+
         return response;
     }
 
@@ -460,7 +460,7 @@ public class WebSocketKieServerClient implements KieServicesClient {
             ServiceResponsesList list = WebSocketUtils.unmarshal(message, ServiceResponsesList.class);
             return list.getResponses().get(0);
         })).getResponses().get(0);
-        
+
         return response;
     }
 
@@ -471,7 +471,7 @@ public class WebSocketKieServerClient implements KieServicesClient {
             ServiceResponsesList list = WebSocketUtils.unmarshal(message, ServiceResponsesList.class);
             return list.getResponses().get(0);
         })).getResponses().get(0);
-        
+
         return response;
     }
 
@@ -482,7 +482,7 @@ public class WebSocketKieServerClient implements KieServicesClient {
             ServiceResponsesList list = WebSocketUtils.unmarshal(message, ServiceResponsesList.class);
             return list.getResponses().get(0);
         })).getResponses().get(0);
-        
+
         return response;
     }
 
@@ -498,7 +498,7 @@ public class WebSocketKieServerClient implements KieServicesClient {
             ServiceResponsesList list = WebSocketUtils.unmarshal(message, ServiceResponsesList.class);
             return list.getResponses().get(0);
         })).getResponses().get(0);
-        
+
         return response;
     }
 
@@ -509,8 +509,8 @@ public class WebSocketKieServerClient implements KieServicesClient {
             ServiceResponsesList list = WebSocketUtils.unmarshal(message, ServiceResponsesList.class);
             return list.getResponses().get(0);
         })).getResponses().get(0);
-        
-        return response; 
+
+        return response;
     }
 
     @Override
@@ -520,8 +520,8 @@ public class WebSocketKieServerClient implements KieServicesClient {
             ServiceResponsesList list = WebSocketUtils.unmarshal(message, ServiceResponsesList.class);
             return list.getResponses().get(0);
         })).getResponses().get(0);
-        
-        return response; 
+
+        return response;
     }
 
     @Override
@@ -547,8 +547,8 @@ public class WebSocketKieServerClient implements KieServicesClient {
             ServiceResponsesList list = WebSocketUtils.unmarshal(message, ServiceResponsesList.class);
             return list.getResponses().get(0);
         })).getResponses().get(0);
-        
-        return response; 
+
+        return response;
     }
 
     @Override
@@ -593,7 +593,7 @@ public class WebSocketKieServerClient implements KieServicesClient {
             ServiceResponsesList list = WebSocketUtils.unmarshal(message, ServiceResponsesList.class);
             return list.getResponses().get(0);
         })).getResponses().get(0);
-        
+
         return response;
     }
 
@@ -604,10 +604,10 @@ public class WebSocketKieServerClient implements KieServicesClient {
             ServiceResponsesList list = WebSocketUtils.unmarshal(message, ServiceResponsesList.class);
             return list.getResponses().get(0);
         })).getResponses().get(0);
-        
+
         return response;
     }
-    
+
     @Override
     public void close() {
         // no-op

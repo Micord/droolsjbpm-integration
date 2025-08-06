@@ -18,21 +18,22 @@ package org.kie.server.springboot.samples;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 @Configuration("kieServerSecurity")
 @EnableWebSecurity
-public class IntegrationTestsWebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class IntegrationTestsWebSecurityConfig {
 
     private static final String USER_PASSWORD = "usetheforce123@";
     private static final String KIE_SERVER_ROLE = "kie-server";
@@ -43,21 +44,25 @@ public class IntegrationTestsWebSecurityConfig extends WebSecurityConfigurerAdap
     private static final String IT_ROLE = "IT";
     private static final String ACCOUNTING_ROLE = "Accounting";
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
-        .csrf().disable()
-        .authorizeRequests().antMatchers("/**/server/readycheck").permitAll() // Allow health check without authentication
-        .regexMatchers(".*swagger.json", ".*swagger-ui.js", ".*/css/.*css", ".*/lib/.*js", ".*/images/.*png").permitAll() //Allow also Swagger elements
-        .anyRequest().authenticated()
-        .and()
-        .httpBasic();
+            .csrf().disable()
+            .authorizeHttpRequests(
+                request -> request
+                    .requestMatchers("/**/server/readycheck").permitAll()
+                    .requestMatchers(".*swagger.json", ".*swagger-ui.js", ".*/css/.*css", ".*/lib/.*js", ".*/images/.*png").permitAll()
+                    .anyRequest().authenticated()
+            )
+            .formLogin(Customizer.withDefaults())
+            .httpBasic(Customizer.withDefaults());
+        return http.build();
     }
 
     /**
      * Provide altered implementation of StrictHttpFirewall to be able to run som tests from ProcessDefinitionIntegrationTest
      * class which test that there can be a task name with a question mark (?).
-     * The other possibility to set this implementation is by overriding the {@link #configure(WebSecurity)} method.
+     * The other possibility to set this implementation is by overriding the method.
      */
     @Bean
     public HttpFirewall customStrictHttpFirewall() {
@@ -68,7 +73,6 @@ public class IntegrationTestsWebSecurityConfig extends WebSecurityConfigurerAdap
     }
 
     @Bean
-    @Override
     public UserDetailsManager userDetailsService() {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();

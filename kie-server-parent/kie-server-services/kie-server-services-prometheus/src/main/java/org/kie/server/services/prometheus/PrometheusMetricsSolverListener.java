@@ -16,7 +16,7 @@ package org.kie.server.services.prometheus;
 
 import io.prometheus.client.Summary;
 import org.optaplanner.core.impl.phase.event.PhaseLifecycleListenerAdapter;
-import org.optaplanner.core.impl.solver.scope.DefaultSolverScope;
+import org.optaplanner.core.impl.phase.scope.AbstractPhaseScope;
 
 public class PrometheusMetricsSolverListener extends PhaseLifecycleListenerAdapter<Object> {
 
@@ -34,21 +34,21 @@ public class PrometheusMetricsSolverListener extends PhaseLifecycleListenerAdapt
     }
 
     @Override
-    public void solvingStarted(DefaultSolverScope solverScope) {
+    public void phaseStarted(AbstractPhaseScope solverScope) {
         metrics.getOptaPlannerSolverCount().inc();
         timer = metrics.getOptaPlannerSolverDuration().labels(solverId).startTimer();
     }
 
     @Override
-    public void solvingEnded(DefaultSolverScope solverScope) {
+    public void phaseEnded(AbstractPhaseScope solverScope) {
         metrics.getOptaPlannerSolverCount().dec();
         metrics.getOptaPlannerSolverScoreCalculationSpeed().labels(solverId).observe(getScoreCalculationSpeed(solverScope));
         timer.observeDuration();
     }
 
-    private double getScoreCalculationSpeed(DefaultSolverScope solverScope) {
-        long timeMillisSpent = solverScope.calculateTimeMillisSpentUpToNow();
+    private double getScoreCalculationSpeed(AbstractPhaseScope solverScope) {
+        long timeMillisSpent = solverScope.calculatePhaseTimeMillisSpentUpToNow();
         // Avoid divide by zero exception on a fast CPU
-        return solverScope.getScoreCalculationCount() * 1000L / (timeMillisSpent == 0L ? 1L : timeMillisSpent);
+        return solverScope.getPhaseScoreCalculationCount() * 1000L / (timeMillisSpent == 0L ? 1L : timeMillisSpent);
     }
 }

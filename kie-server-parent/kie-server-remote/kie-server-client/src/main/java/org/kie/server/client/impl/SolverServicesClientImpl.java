@@ -39,7 +39,7 @@ import org.kie.server.api.model.type.JaxbBoolean;
 import org.kie.server.api.rest.RestURI;
 import org.kie.server.client.KieServicesConfiguration;
 import org.kie.server.client.SolverServicesClient;
-import org.optaplanner.core.impl.solver.ProblemFactChange;
+import org.optaplanner.core.api.solver.ProblemFactChange;
 
 public class SolverServicesClientImpl
         extends AbstractKieServicesClientImpl

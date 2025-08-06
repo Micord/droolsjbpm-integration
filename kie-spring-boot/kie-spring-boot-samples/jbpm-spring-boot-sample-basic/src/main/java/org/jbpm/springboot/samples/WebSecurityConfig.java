@@ -16,29 +16,37 @@
 
 package org.jbpm.springboot.samples;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().permitAll();
-    }
+  @Bean
+  protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
+    return http.authorizeHttpRequests(registry -> registry.anyRequest().permitAll()).build();
+  }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {        
-        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-              
-        auth.inMemoryAuthentication()
-                .withUser("john").password(encoder.encode("john1")).roles("jbpm,HR,IT,Accounting,PM");
-    }
+  @Bean
+  InMemoryUserDetailsManager userDetailsService() {
+    UserDetails kieServerUser = User.withDefaultPasswordEncoder()
+        .username("kieserver")
+        .password("kieserver1!")
+        .roles("kie-server")
+        .build();
+    UserDetails johnUser = User.withDefaultPasswordEncoder()
+        .username("john")
+        .password("john1")
+        .roles("jbpm", "HR", "IT", "Accounting", "PM")
+        .build();
+
+    return new InMemoryUserDetailsManager(kieServerUser, johnUser);
+  }
 }
