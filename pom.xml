@@ -13,7 +13,7 @@
 
   <groupId>org.drools</groupId>
   <artifactId>droolsjbpm-integration</artifactId>
-  <version>7.74.1.Final-Micord.4</version>
+  <version>7.74.1.Final-Micord.5</version>
 
   <packaging>pom</packaging>
 
@@ -28,7 +28,7 @@
     <kie-soup.version>7.74.1.Final-Micord.2</kie-soup.version>
     <droolsjbpm-knowledge.version>7.74.1.Final-Micord.2</droolsjbpm-knowledge.version>
     <drools.version>7.74.1.Final-Micord.4</drools.version>
-    <jbpm.version>7.74.1.Final-Micord.5</jbpm.version>
+    <jbpm.version>7.74.1.Final-Micord.8</jbpm.version>
     <jetty.version>12.0.16</jetty.version>
     <version.org.eclipse.persistence>4.0.7</version.org.eclipse.persistence>
     <version.com.thoughtworks.xstream>1.4.21</version.com.thoughtworks.xstream>
@@ -1150,7 +1150,7 @@
       <dependency>
         <groupId>org.kie</groupId>
         <artifactId>jbpm-process-svg</artifactId>
-        <version>7.74.1.Final-Micord.4</version>
+        <version>7.74.1.Final-Micord.5</version>
       </dependency>
 
       <dependency>
